@@ -1,14 +1,26 @@
+/* 
+PEACH1 : #F39189
+BLUE1: #046582
+Peachoff #BB8082
+Grey #6E7582
+
+*/
+
 html {
+
 }
 body{
-    background-color: yellow;
+
+    /* background-image: url('https://wallpaperbat.com/img/554289-do-you-want-to-gain-some-natural-inspirations-be-dazzle-by-the-inspiration-you-can-find-at-pullcasteu-sunset-wallpaper-sky-aesthetic-beach-wallpaper.jpg') */
+    /* background-color: #046582;   */
+    background-color: #F5685D;
 }
+
 
 .container{
     display: grid;
     row-gap: 20px;
     column-gap: 20px;
-    background-color: aqua;
     grid-template-columns: auto;
     grid-template-rows: auto;
 }
@@ -17,15 +29,32 @@ body{
     width: 100%;
     min-height: 100px;
     text-align: center;
-    color:white;
-    background-color: blue;
-    /* margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
+    color: antiquewhite;
+    /* border-radius: 30px; */
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 40px;
+    opacity: 62%;
 }
 
+.Header{
+    text-align: center;
+    font-size: 50px;
+}
+
+#time{
+    font-size: 120px;
+    font-weight: lighter;
+    margin: 5px;
+}
+
+#day{
+    font-size: 60px;
+    font-weight: lighter;
+    margin: 5px;
+}
 
 .Task:hover{
     background-color: black;
@@ -38,6 +67,9 @@ body{
 }
 #paragraph{
     font-size: 40px;
-
-
 }
+
+input[type=checkbox] {
+    visibility: hidden;
+}
+
