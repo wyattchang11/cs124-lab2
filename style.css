@@ -26,9 +26,9 @@ body{
 }
 
 .Task{
-    width: 100%;
-    min-height: 100px;
-    text-align: center;
+    /* width: 100%; */
+    /* min-height: 100px; */
+    text-align: left;
     color: antiquewhite;
     /* border-radius: 30px; */
     border-color:bisque;
@@ -36,6 +36,13 @@ body{
     border-width: 3px;
     font-family: Georgia;
     font-size: 40px;
+    opacity: 62%;
+    padding: 5px;
+}
+
+.AddNew{
+    color: antiquewhite;
+    font-family: Georgia;
     opacity: 62%;
 }
 
@@ -58,18 +65,17 @@ body{
 
 .Task:hover{
     background-color: black;
+    
 }
 
-#Add {
-    text-align: end;
-    
-    margin:10px;
-}
 #paragraph{
     font-size: 40px;
 }
 
-input[type=checkbox] {
-    visibility: hidden;
-}
 
+#completed{
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    opacity: 50%;
+    height: 100%;
+}
