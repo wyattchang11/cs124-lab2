@@ -10,7 +10,6 @@ html {
 
 }
 body{
-
     background-image: url('https://wallpaperbat.com/img/554289-do-you-want-to-gain-some-natural-inspirations-be-dazzle-by-the-inspiration-you-can-find-at-pullcasteu-sunset-wallpaper-sky-aesthetic-beach-wallpaper.jpg')
     /* background-color: #046582;   */
     /* background-color: #F5685D; */
@@ -40,13 +39,13 @@ body{
     font-size: 40px;
     opacity: 62%;
     padding: 5px;
-    min-height: ;
 }
 
 .AddNew{
     color: antiquewhite;
     font-family: Georgia;
     opacity: 62%;
+    
 }
 
 .Header{
@@ -55,7 +54,7 @@ body{
 }
 
 #time{
-    font-size: 120px;
+    font-size: 140px;
     font-weight: lighter;
     margin: 5px;
     text-align: left;
@@ -78,12 +77,25 @@ body{
 }
 
 
-#completed{
+
+.CompletedTask{
+    text-align: left;
+    color: antiquewhite;
+    /* border-radius: 30px; */
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 40px;
+    opacity: 62%;
+    padding: 5px;
+    min-height: ;
     text-decoration: line-through;
     text-decoration-thickness: 2px;
     opacity: 50%;
     height: 100%;
 }
+
 
 #incompleteToggle{
     width:50%;
@@ -98,8 +110,41 @@ body{
 #newTaskInput{
     background-color: transparent;
     color: antiquewhite; 
+    text-align: left;
+    /* color: antiquewhite; */
+    /* border-radius: 30px; */
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 40px;
+    opacity: 62%;
+    padding: 5px;
 }
 
-#newTaskInput placeholder {
-    color: antiquewhite
+.form-contorl::-webkit-input-placeholder {
+    color:  antiquewhite !important;
+    opacity: 1;
+}
+
+.NoTasks{
+    text-align: center;
+    font-weight: 400;
+    margin-top: 100px;
+    font-size: 70px;
+    color: antiquewhite;
+    text-transform: lowercase;
+    opacity: 90%;
+}
+
+.form-control::placeholder{
+    color:antiquewhite;
+}
+#addTaskButton{
+    color: grey;
+    background-color:antiquewhite;
+    border-color:antiquewhite;
+    font-family: Georgia;
+    font-weight: bold;
+
 }
