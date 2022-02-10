@@ -11,9 +11,9 @@ html {
 }
 body{
 
-    /* background-image: url('https://wallpaperbat.com/img/554289-do-you-want-to-gain-some-natural-inspirations-be-dazzle-by-the-inspiration-you-can-find-at-pullcasteu-sunset-wallpaper-sky-aesthetic-beach-wallpaper.jpg') */
+    background-image: url('https://wallpaperbat.com/img/554289-do-you-want-to-gain-some-natural-inspirations-be-dazzle-by-the-inspiration-you-can-find-at-pullcasteu-sunset-wallpaper-sky-aesthetic-beach-wallpaper.jpg')
     /* background-color: #046582;   */
-    background-color: #F5685D;
+    /* background-color: #F5685D; */
 }
 
 
@@ -24,6 +24,8 @@ body{
     grid-template-columns: auto;
     grid-template-rows: auto;
 }
+
+
 
 .Task{
     /* width: 100%; */
@@ -38,6 +40,7 @@ body{
     font-size: 40px;
     opacity: 62%;
     padding: 5px;
+    min-height: ;
 }
 
 .AddNew{
@@ -55,12 +58,14 @@ body{
     font-size: 120px;
     font-weight: lighter;
     margin: 5px;
+    text-align: left;
 }
 
 #day{
     font-size: 60px;
     font-weight: lighter;
     margin: 5px;
+    text-align: left;
 }
 
 .Task:hover{
@@ -78,4 +83,23 @@ body{
     text-decoration-thickness: 2px;
     opacity: 50%;
     height: 100%;
+}
+
+#incompleteToggle{
+    width:50%;
+}
+#allToggle{
+    width: 50%;
+}
+#taskFilter{
+    width: 100%;
+}
+
+#newTaskInput{
+    background-color: transparent;
+    color: antiquewhite; 
+}
+
+#newTaskInput placeholder {
+    color: antiquewhite
 }
