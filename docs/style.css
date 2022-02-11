@@ -6,9 +6,6 @@ Grey #6E7582
 
 */
 
-html {
-
-}
 body{
     background-image: url('https://wallpaperbat.com/img/554289-do-you-want-to-gain-some-natural-inspirations-be-dazzle-by-the-inspiration-you-can-find-at-pullcasteu-sunset-wallpaper-sky-aesthetic-beach-wallpaper.jpg')
     /* background-color: #046582;   */
@@ -27,11 +24,8 @@ body{
 
 
 .Task{
-    /* width: 100%; */
-    /* min-height: 100px; */
     text-align: left;
     color: antiquewhite;
-    /* border-radius: 30px; */
     border-color:bisque;
     border-style: solid;
     border-width: 3px;
@@ -39,6 +33,19 @@ body{
     font-size: 40px;
     opacity: 62%;
     padding: 5px;
+}
+
+.TaskDone{
+    text-align: left;
+    color: antiquewhite;
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 40px;
+    opacity: 62%;
+    padding: 5px;
+    text-decoration: line-through
 }
 
 .AddNew{
