@@ -148,3 +148,9 @@ body{
     font-weight: bold;
 
 }
+
+#deleteCompletedTasks{
+    background-color:antiquewhite;
+    border-color:antiquewhite;
+    color:grey;
+}
