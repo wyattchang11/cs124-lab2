@@ -34,6 +34,11 @@ body{
     padding: 5px;
 }
 
+.Task [completed="true"] {
+    text-decoration: line-through;
+    background-color: blue;
+}
+
 .TaskDone{
     text-align: left;
     color: antiquewhite;
@@ -82,7 +87,14 @@ body{
     font-size: 40px;
 }
 
+.SelectedTab{
+    background-color:darkslategrey;
+    min-width: 100%;
+}
 
+.Tab{
+    background-color: grey;
+}
 
 .CompletedTask{
     text-align: left;
@@ -95,7 +107,7 @@ body{
     font-size: 40px;
     opacity: 62%;
     padding: 5px;
-    min-height: ;
+    /* min-height: ; */
     text-decoration: line-through;
     text-decoration-thickness: 2px;
     opacity: 50%;

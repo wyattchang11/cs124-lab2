@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, Fragment } from 'react';
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 import '../src/style.css';
@@ -17,7 +18,7 @@ const initialData = [
   }, 
   {
     id: 3,
-    task: "Take the kids out for dinner",
+    task: "Take the kids out for dinner divide by two and add 7 then you're good to go",
     completed: false,
   }
 
@@ -27,11 +28,9 @@ const Task = (props) => {
   return (
     <div class="row">
         <div class="col-12">
-            <div class="Task">
-                {props.task}
-                <span>
-                    <icon class="fas fa-edit"></icon>
-                </span>
+            <div className={props.className} onClick={() => console.log('1')}>
+              {props.task}
+              <FontAwesomeIcon icon={faEdit} />
             </div>
         </div>
     </div>)
@@ -49,33 +48,6 @@ const Header = (props) => {
     </div>
 } 
 
-// const Tab = (props) => {
-//   const classNames = ["tab-list-item"];
-//   if (props.activeTab === props.label) {
-//     classNames.push("tab-list-active");
-//   }
-//   return <li className={classNames.join(" ")}
-//           onClick={() => props.onClickTab(props.label)}>
-//             {props.label}
-//   </li>
-// }
-
-// const TabList = (props) => {
-//   const [activeTab, setActiveTab] = useState(props.children[0].key);
-
-//   return <div className="tabs">
-//       <ol className="tab-list">
-//           {props.children.map(child =>
-//               <Tab key={child.key}
-//                    label={child.key}
-//                    activeTab={activeTab}
-//                    onClickTab={(label) => setActiveTab(label)}/>)}
-//       </ol>
-//       {props.children.map(child => activeTab === child.key && child)}
-//   </div>;
-// }
-
-
 const ToggleBar = (props) => {
   const [showAllTasks, setShowAllTasks] = useState(true);
   const displayAllTasks = () => setShowAllTasks(true);
@@ -83,28 +55,25 @@ const ToggleBar = (props) => {
   return (<div>
     <div class="row">
       <div class="col-6" onClick={displayAllTasks}>
-        Outstanding Tasks
+        <div className={showAllTasks ? "SelectedTab" : "Tab"}>
+          All Tasks
+        </div>
       </div>
       <div class="col-6" onClick={hideCompletedTasks}>
-        All Tasks
+        <div className={showAllTasks ? "Tab" : "SelectedTab"}>
+          Outstanding Tasks
+        </div>
       </div>
     </div>
-    <TaskList onAddTask={props.onAddTask} data={props.data} showAllTasks={showAllTasks}/>
+    <div class="row">
+      <TaskList onAddTask={props.onAddTask} data={props.data} showAllTasks={showAllTasks}/>
+    </div>
   </div>);
 }
 
 const TaskList = (props) => {
-  return (
-  <div class="container">
-      <table>
-          {props.showAllTasks ? props.data.map((entry) => {
-          return <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "" : ""} />
-          }) : props.data.filter(entry => !entry.completed).map((entry) => {
-            return <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "" : ""} />
-            }) 
-          }
-      </table>
-  </div>)
+  const data = props.showAllTasks ? props.data : props.data.filter(entry => !entry.completed);
+  return (data.map(entry =>  <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "CompletedTask" : "Task"} />))
 
 }
 
@@ -122,9 +91,10 @@ function App() {
     setTask([...task, { id: generateUniqueID(), completed: false }])
   }
 
-  function handleComplete(task) {
-    setCompletedTask([...task, { id: generateUniqueID(), completed: true }])
-  }
+  // function toggleComplete(task) {
+  //   task.completed === false ? setCompletedTask([...task, { id: generateUniqueID(), completed: true }]) : 
+  //   
+//}
 
   function deleteCompletedTasks() {
     setTask(tasks.filter(t => !completedTasks.includes(t.id)));
