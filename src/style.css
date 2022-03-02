@@ -34,10 +34,6 @@ body{
     padding: 5px;
 }
 
-.Task [completed="true"] {
-    text-decoration: line-through;
-    background-color: blue;
-}
 
 .TaskDone{
     text-align: left;
@@ -79,6 +75,11 @@ body{
 }
 
 .Task:hover{
+    background-color: black;
+    
+}
+
+.TaskDone:hover{
     background-color: black;
     
 }
