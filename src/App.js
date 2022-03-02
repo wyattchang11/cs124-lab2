@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 import { useEffect, useState, Fragment } from 'react';
@@ -48,17 +49,37 @@ const Header = (props) => {
     </div>
 } 
 
+const Tab = (props) => {
+  const classNames = ["tab-list-item"];
+  if (props.activeTab === props.label) {
+    classNames.push("tab-list-active");
+  }
+  return <li className={classNames.join(" ")}
+          onClick={() => props.onClickTab(props.label)}>
+            {props.label}
+  </li>
+}
+
+const TabList = (props) => {
+  const [activeTab, setActiveTab] = useState(props.children[0].key);
+
+  return <div className="tabs">
+      <ol className="tab-list">
+          {props.children.map(child =>
+              <Tab key={child.key}
+                   label={child.key}
+                   activeTab={activeTab}
+                   onClickTab={(label) => setActiveTab(label)}/>)}
+      </ol>
+      {props.children.map(child => activeTab === child.key && child)}
+  </div>;
+}
+
+
 const ToggleBar = (props) => {
     return (<div class="row">
         <div class="col-12">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="taskFilter">
-                <label class="btn btn-lg btn-secondary" id="incompleteToggle">
-                    <input type="radio" name="options" id="option1" autocomplete="off"/>
-                </label>
-                <label class="btn btn-lg btn-secondary active" id="allToggle" active>
-                    <input type="radio" name="options" id="option2" autocomplete="off"/>
-                </label>
-            </div>
+
         </div>
     </div>);
 }
@@ -78,6 +99,9 @@ const TaskList = (props) => {
 }
 
 
+
+
+
 function App() {
   const [tasks, setTask] = useState(initialData)
   const [completedTasks, setCompletedTask] = useState([]);
@@ -92,7 +116,7 @@ function App() {
     setCompletedTask([...task, { id: generateUniqueID(), completed: true }])
   }
 
-  function deleteCompletedTasks(completedTasks) {
+  function deleteCompletedTasks() {
     setTask(tasks.filter(t => !completedTasks.includes(t.id)));
     setCompletedTask([]);
   }
