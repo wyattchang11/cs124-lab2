@@ -20,33 +20,24 @@ body{
     grid-template-rows: auto;
 }
 
-
+.top-buffer {
+    margin-top: 5px;
+}
 
 .Task{
     text-align: left;
-    color: antiquewhite;
+    color: antiquewhite !important;
     border-color:bisque;
     border-style: solid;
     border-width: 3px;
     font-family: Georgia;
-    font-size: 40px;
+    font-size: 30px;
     opacity: 62%;
     padding: 5px;
+    display: inline-block;
+
 }
 
-
-.TaskDone{
-    text-align: left;
-    color: antiquewhite;
-    border-color:bisque;
-    border-style: solid;
-    border-width: 3px;
-    font-family: Georgia;
-    font-size: 40px;
-    opacity: 62%;
-    padding: 5px;
-    text-decoration: line-through
-}
 
 .AddNew{
     color: antiquewhite;
@@ -57,18 +48,18 @@ body{
 
 .Header{
     text-align: center;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 #time{
-    font-size: 140px;
+    font-size: 90px;
     font-weight: lighter;
     margin: 5px;
     text-align: left;
 }
 
 #day{
-    font-size: 60px;
+    font-size: 40px;
     font-weight: lighter;
     margin: 5px;
     text-align: left;
@@ -105,7 +96,7 @@ body{
     border-style: solid;
     border-width: 3px;
     font-family: Georgia;
-    font-size: 40px;
+    font-size: 30px;
     opacity: 62%;
     padding: 5px;
     /* min-height: ; */
@@ -178,6 +169,7 @@ div FontAwesomeIcon{
     position: absolute;
     right: 0;
     bottom: 0;
+    display: inline-block;
 
   }
 
