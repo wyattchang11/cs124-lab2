@@ -49,51 +49,61 @@ const Header = (props) => {
     </div>
 } 
 
-const Tab = (props) => {
-  const classNames = ["tab-list-item"];
-  if (props.activeTab === props.label) {
-    classNames.push("tab-list-active");
-  }
-  return <li className={classNames.join(" ")}
-          onClick={() => props.onClickTab(props.label)}>
-            {props.label}
-  </li>
-}
+// const Tab = (props) => {
+//   const classNames = ["tab-list-item"];
+//   if (props.activeTab === props.label) {
+//     classNames.push("tab-list-active");
+//   }
+//   return <li className={classNames.join(" ")}
+//           onClick={() => props.onClickTab(props.label)}>
+//             {props.label}
+//   </li>
+// }
 
-const TabList = (props) => {
-  const [activeTab, setActiveTab] = useState(props.children[0].key);
+// const TabList = (props) => {
+//   const [activeTab, setActiveTab] = useState(props.children[0].key);
 
-  return <div className="tabs">
-      <ol className="tab-list">
-          {props.children.map(child =>
-              <Tab key={child.key}
-                   label={child.key}
-                   activeTab={activeTab}
-                   onClickTab={(label) => setActiveTab(label)}/>)}
-      </ol>
-      {props.children.map(child => activeTab === child.key && child)}
-  </div>;
-}
+//   return <div className="tabs">
+//       <ol className="tab-list">
+//           {props.children.map(child =>
+//               <Tab key={child.key}
+//                    label={child.key}
+//                    activeTab={activeTab}
+//                    onClickTab={(label) => setActiveTab(label)}/>)}
+//       </ol>
+//       {props.children.map(child => activeTab === child.key && child)}
+//   </div>;
+// }
 
 
 const ToggleBar = (props) => {
-    return (<div class="row">
-        <div class="col-12">
-
-        </div>
-    </div>);
+  const [showAllTasks, setShowAllTasks] = useState(true);
+  const displayAllTasks = () => setShowAllTasks(true);
+  const hideCompletedTasks = () => setShowAllTasks(false);
+  return (<div>
+    <div class="row">
+      <div class="col-6" onClick={displayAllTasks}>
+        Outstanding Tasks
+      </div>
+      <div class="col-6" onClick={hideCompletedTasks}>
+        All Tasks
+      </div>
+    </div>
+    <TaskList onAddTask={props.onAddTask} data={props.data} showAllTasks={showAllTasks}/>
+  </div>);
 }
 
 const TaskList = (props) => {
   return (
   <div class="container">
-    <Header/>
-    <ToggleBar/>
-    <table>
-        {props.data.map((entry) => {
-        return <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "" : ""} />
-        })}
-    </table>
+      <table>
+          {props.showAllTasks ? props.data.map((entry) => {
+          return <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "" : ""} />
+          }) : props.data.filter(entry => !entry.completed).map((entry) => {
+            return <Task onAddTask={props.onAddTask} id={entry.id} task={entry.task} className={entry.completed ? "" : ""} />
+            }) 
+          }
+      </table>
   </div>)
 
 }
@@ -125,7 +135,10 @@ function App() {
     setTask(tasks.map(t => t.id === taskId ? {...t, [name]:value} : t));
   }
   
-  return <TaskList onAddTask={handleAdd} data={tasks}/>;
+  return (<div class="container">
+    <Header/>
+    <ToggleBar onAddTask={handleAdd} data={tasks}/>  
+  </div>);
 }
 
 export default App;
