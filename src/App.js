@@ -28,9 +28,9 @@ const Task = (props) => {
   return (
     <div class="row">
         <div class="col-12">
-            <div className={props.className} onClick={() => console.log('1')}>
+            <div className={props.className} onClick={(()=> console.log("1"))/*toggleComplete(props)*/}>
               {props.task}
-              <FontAwesomeIcon icon={faEdit} />
+              <FontAwesomeIcon icon={faEdit} name="editButton"/>
             </div>
         </div>
     </div>)
@@ -91,10 +91,10 @@ function App() {
     setTask([...task, { id: generateUniqueID(), completed: false }])
   }
 
-  // function toggleComplete(task) {
-  //   task.completed === false ? setCompletedTask([...task, { id: generateUniqueID(), completed: true }]) : 
-  //   
-//}
+  function toggleComplete(task) {
+    task.completed === false ? setCompletedTask([...task, { id: generateUniqueID(), completed: true }]) : 
+    setCompletedTask(completedTasks.filter(t => t.id !== task.id))
+}
 
   function deleteCompletedTasks() {
     setTask(tasks.filter(t => !completedTasks.includes(t.id)));

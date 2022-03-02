@@ -173,3 +173,11 @@ body{
     border-color:antiquewhite;
     color:grey;
 }
+
+div FontAwesomeIcon{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+  }
+
