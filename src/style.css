@@ -173,3 +173,56 @@ div FontAwesomeIcon{
 
   }
 
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 640pt;
+    right: 360pt;
+    width: 360pt;
+    height: 640pt;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.taskModal {
+    background-color: antiquewhite;
+    border-radius: 5pt;
+    border-color: bisque;
+    border-style: solid;
+    margin: 200px 22px 0px 20px;
+    top: 0px;
+    left: 0px;
+    height: 100px;
+    width: 300px;
+    padding: 10pt;
+    position: relative;
+}
+
+.alert-buttons {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    right: 0;
+    background-color: antiquewhite;
+    color:antiquewhite;
+}
+
+.alert-button.alert-cancel{
+    color:#6E7582;
+    background-color:antiquewhite;
+    border-color: bisque;
+}
+
+.alert-button.alert-ok{
+    color:#6E7582;
+    background-color:antiquewhite;
+    border-color:bisque;
+}
+
+.taskEditor{
+    background-color: white;
+    border-color:bisque;
+    border-radius:3px;
+    border-width: 1px;
+}

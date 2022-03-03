@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, Fragment } from 'react';
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 import '../src/style.css';
@@ -24,33 +24,68 @@ const initialData = [
 ]
 
 const Task = (props) => {
-  return (
-    <div className={"row top-buffer"}>
+  // const [showTaskEditor, setShowTaskEditor] = useState(false);
+  // // const [taskToEdit, setTaskToEdit] = useState({});
+  // function toggleTaskEditor(){
+  //   setShowTaskEditor(!showTaskEditor);
+  // }
+
+  return (<div>
+      <div className={"row top-buffer"}>
         <div className={"col-12"}>
-            <div className={props.className} onClick={() => props.onToggleComplete(props.task)}>
+            <div className={props.className}>
               <div className="row">
-                <div className="col-10">
+                <div className="col-10" onClick={() => props.changeTaskField(props.task, "completed", !props.task.completed)}>
                   {props.task.task}
-                 </div>
-                <div className="col-2 justify-content-center">
-                  <FontAwesomeIcon icon={faEdit} name="editButton" size="sm" onClick={() => console.log(1)}/>
+                </div>
+                <div className="col-2 justify-content-center" onClick={() => {
+                  props.changeTaskToEdit(props.task);
+                  props.toggleTaskEditor();
+                }}>
+                  <FontAwesomeIcon icon={faEdit} name="editButton" size="sm"/>
                 </div>
               </div>
                 
             </div>
         </div>
+      </div>
+      
     </div>)
+}
+
+const TaskEditor = (props) => {
+  const [inputValue, setInputValue] = useState(props.taskToEdit.task);
+  const changeInputValue = (e) => setInputValue(e.target.value);
+  return <div className={"container backdrop"}>
+        <div className={"taskModal"}>
+              <div className={"row"}>
+                <input value={inputValue} onChange={changeInputValue} className={"taskEditor"}/>
+              </div>
+              <div className={"row align-items-center"}>
+                <button className={"col-6 alert-button alert-cancel"} type={"button"} onClick={props.toggleTaskEditor}>
+                    Cancel
+                </button>
+                <button className={"col-6 alert-button alert-ok"} type={"button"}
+                        onClick={() => {
+                          props.toggleTaskEditor();
+                          props.changeTaskField(props.taskToEdit, "task", inputValue);
+                        }}>
+                    OK
+                </button>
+              </div>
+        </div>
+    </div>
 }
 
 const Header = (props) => {
     const [time, setTime] = useState(new Date());
-    // useEffect(() => {
-    //   const interval = setInterval(() => setTime(new Date()), 1000);
+    useEffect(() => {
+      const interval = setInterval(() => setTime(new Date()), 1000);
   
-    //   return () => {
-    //     clearInterval(interval);
-    //   };
-    // }, []);
+      return () => {
+        clearInterval(interval);
+      };
+    }, []);
     return <div className="row">
         <div className="col-12">
             <div className="Header">
@@ -79,46 +114,67 @@ const ToggleBar = (props) => {
       </div>
     </div>
     <div className="row">
-      <TaskList onAddTask={props.onAddTask} data={props.data} showAllTasks={showAllTasks} onToggleComplete={props.onToggleComplete}/>
+      <TaskList onAddTask={props.onAddTask} data={props.data} showAllTasks={showAllTasks} toggleTaskEditor={props.toggleTaskEditor} changeTaskToEdit={props.changeTaskToEdit} changeTaskField={props.changeTaskField} />
     </div>
   </div>);
 }
 
 const TaskList = (props) => {
   const data = props.showAllTasks ? props.data : props.data.filter(entry => !entry.completed);
-  return (data.map(entry =>  <Task onAddTask={props.onAddTask} id={entry.id} task={entry} onToggleComplete={props.onToggleComplete} className={entry.completed ? "CompletedTask" : "Task"} />))
-
+  return (data.map(entry =>  <Task 
+    onAddTask={props.onAddTask} 
+    id={entry.id} 
+    task={entry} 
+    changeTaskField={props.changeTaskField}  
+    toggleTaskEditor={props.toggleTaskEditor}
+    changeTaskToEdit={props.changeTaskToEdit}
+    className={entry.completed ? "CompletedTask" : "Task"} />))
 }
 
+const DeletedButton = (props) => {
+  return (
+    <div>
+      <FontAwesomeIcon icon={faTrash} name="trashButton" size="xl" onClick={props.deleteCompletedTasks}/>
+    </div>
+  );
+}
 
 
 
 
 function App() {
   const [tasks, setTask] = useState(initialData)
-
-  function handleAdd(task) {
-    setTask([...task, { id: generateUniqueID(), completed: false }])
+  const [showTaskEditor, setShowTaskEditor] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState({});
+  function handleAdd(task, taskName) {
+    setTask([...task, { id: generateUniqueID(), task: taskName, completed: false }])
   }
 
-  function toggleComplete(task) {
+  function changeTaskField(task, field, value) {
     setTask(tasks.map(
-      t => t.id === task.id ? {...t, completed: !t.completed} : t
+      t => t.id === task.id ? {...t, [field]: value} : t
     ))
   }
 
-  // function deleteCompletedTasks() {
-  //   setTask(tasks.filter(t => !completedTasks.includes(t.id)));
-  //   setCompletedTasks([]);
-  // }
-  
-  function editTask(taskId, name, value) {
-    setTask(tasks.map(t => t.id === taskId ? {...t, [name]:value} : t));
+  function toggleTaskEditor(){
+    setShowTaskEditor(!showTaskEditor);
   }
+
+  function changeTaskToEdit(taskDescription){
+    setTaskToEdit(taskDescription);
+  }
+
+  function deleteCompletedTasks(task) {
+    setTask(tasks.filter(t => !t.completed));
+  }
+  
+
   
   return (<div className="container">
     <Header/>
-    <ToggleBar onAddTask={handleAdd} data={tasks} onToggleComplete={toggleComplete}/>  
+    <ToggleBar onAddTask={handleAdd} data={tasks} changeTaskField={changeTaskField} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor}/>  
+    <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
+    {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} taskToEdit={taskToEdit} changeTaskField={changeTaskField}/>}
   </div>);
 }
 
