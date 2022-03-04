@@ -23,3 +23,15 @@ We also decided to add the time to the top so that users could easily tell how m
 We are the most proud of the clear buttons that we added in order to keep the natural feel from the sunset.
 
 Overall, we made design choices in order to help increase the productivity of our users and create a vibrant, natural, and encouraging feel.
+
+###### Updates to the Design
+
+We had multiple friends breifly test the app to see their preferences on the following: 
+
+1. Whether they prefered editing each task inline or using the modal. 
+2. How they felt about being able to click on a task to complete it
+
+It became clear that clicking on a task to toggle its completion was a desired functionality, so we opted for that along with the modal to edit tasks.
+
+
+
