@@ -35,6 +35,12 @@ It became clear that clicking on a task to toggle its completion was a desired f
 
 When testing to make sure the features worked as desired, we tested the features as we added them. We came up with many edge cases to test for. We tested for when an already completed task was clicked. We wanted this to make the task incomplete, however it wasn't performing this action. So we wrote a new toggleComplete function to handle this functionality. 
 
-We also tested for when the input of a task field was particularly long.
+We then tested to make sure that the completion still worked as desired when the tasks were initially marked as completed. It did not so we revised how the state was changed.
 
-We decided to break the UI into different components of 
+We then tested the add functionality.
+We tested for when the input of a task field was particularly long.
+
+
+We also tested the edit functionality. We found that when the field was edited to have no name, the task still remained. This functionality is actually desired since they can now edit the name again. We only want the deletion of items to occur when the trash button is pressed. We also tested the modal to make sure that when the area outside of the popup was pressed, the buttons beneath the area did not still have functionality.
+
+We decided to break the UI into different components in order to better keep track of and develop the app and make reusability easier. We decided to create components for the App, Header, Task, TaskList, TaskAdder, TaskEditor, and ToggleBar. Each of these components represent a vital portion on the application that performs a certain task.
