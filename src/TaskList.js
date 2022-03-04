@@ -1,4 +1,6 @@
 import Task from './Task.js';
+
+
 const TaskList = (props) => {
     const data = props.showAllTasks ? props.data : props.data.filter(entry => !entry.completed);
     return (data.map(entry =>  <Task 

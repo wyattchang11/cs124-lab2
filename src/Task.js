@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+
+
 const Task = (props) => {
     return (<div>
         <div className={"row top-buffer"}>
