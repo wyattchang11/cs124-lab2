@@ -33,5 +33,8 @@ We had multiple friends breifly test the app to see their preferences on the fol
 
 It became clear that clicking on a task to toggle its completion was a desired functionality, so we opted for that along with the modal to edit tasks.
 
+When testing to make sure the features worked as desired, we tested the features as we added them. We came up with many edge cases to test for. We tested for when an already completed task was clicked. We wanted this to make the task incomplete, however it wasn't performing this action. So we wrote a new toggleComplete function to handle this functionality. 
 
+We also tested for when the input of a task field was particularly long.
 
+We decided to break the UI into different components of 

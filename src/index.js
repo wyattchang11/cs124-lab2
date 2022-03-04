@@ -4,9 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const initialData = [
+  {
+    id: 1,
+    task: "Abstain from interruption",
+    completed: false,
+  },
+  {
+    id: 2,
+    task: "Engaged to the game",
+    completed: true,
+  }, 
+  {
+    id: 3,
+    task: "Take the kids out for dinner divide by two and add 7 then you're good to go",
+    completed: false,
+  }
+]
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App initialData={initialData}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
