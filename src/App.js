@@ -11,7 +11,7 @@ import '../src/style.css';
 
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
-import {collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc, serverTimestamp} from "firebase/firestore";
+import {collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA56ajdAplN-Zf_wKrvBuhuxHvkXURp5lA",
@@ -35,7 +35,7 @@ function App(props) {
 
   const q = query(collection(db, collectionName));
   const [tasks, loading, error] = useCollectionData(q);
-  
+  console.log(tasks);
 
   function handleAdd(taskName) {
     // setTask([...task, { id: generateUniqueID(), task: taskName, completed: false }])
@@ -61,9 +61,9 @@ function App(props) {
 
   function deleteCompletedTasks(task) {
     // setTask(tasks.filter(t => !t.completed));
-    db.collection(collectionName)
-    .where('completed')
-    .forEach((doc) => deleteDoc(doc(db, collectionName, doc.id)))
+    console.log(db.collection(collectionName)
+    .where('completed', '==', 'true')
+    .forEach((d) => deleteDoc(doc(db, collectionName, d.id))))
   }
   
   if (loading) {
@@ -73,8 +73,6 @@ function App(props) {
   if (error) {
     <p>ERROR</p>
   }
-  
-  
 
   return (<div className="container">
     <Header/>
