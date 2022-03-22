@@ -28,8 +28,8 @@ const db = getFirestore(app);
 
 const collectionName = "tasks";
 
+
 function App(props) {
-  // const [tasks, setTask] = useState(props.initialData);
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
 
@@ -38,7 +38,6 @@ function App(props) {
   console.log(tasks);
 
   function handleAdd(taskName) {
-    // setTask([...task, { id: generateUniqueID(), task: taskName, completed: false }])
     const uniqueId = generateUniqueID();
     setDoc(doc(db, collectionName, uniqueId),
      {id: uniqueId, 
@@ -59,11 +58,14 @@ function App(props) {
     setTaskToEdit(taskDescription);
   }
 
-  function deleteCompletedTasks(task) {
+  function deleteCompletedTasks() {
     // setTask(tasks.filter(t => !t.completed));
-    console.log(db.collection(collectionName)
-    .where('completed', '==', 'true')
-    .forEach((d) => deleteDoc(doc(db, collectionName, d.id))))
+    tasks.forEach((task) => {
+      if(task.completed){
+        deleteDoc(doc(db, collectionName, task.id));
+        console.log('deleted doc');
+      }
+    })
   }
   
   if (loading) {

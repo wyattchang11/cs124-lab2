@@ -30,6 +30,7 @@ body{
     opacity: 62%;
     padding: 5px;
     display: inline-block;
+    min-width: 336px;
 
 }
 
@@ -99,6 +100,7 @@ body{
     text-decoration-thickness: 2px;
     opacity: 50%;
     height: 100%;
+    min-width: 336px;
 }
 
 
