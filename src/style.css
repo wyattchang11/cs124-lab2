@@ -78,10 +78,18 @@ body{
 .SelectedTab{
     background-color:darkslategrey;
     min-width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    color: antiquewhite;
+    font-family: Georgia;
 }
 
 .Tab{
     background-color: grey;
+    border-radius: 5px;
+    text-align: center;
+    color: antiquewhite;
+    font-family: Georgia;
 }
 
 .CompletedTask{
@@ -222,4 +230,14 @@ div FontAwesomeIcon{
     border-color:bisque;
     border-radius:3px;
     border-width: 1px;
+}
+
+
+.taskDeleter{
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.trashIcon{
+    margin-left:10px;
 }
