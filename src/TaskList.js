@@ -13,6 +13,7 @@ const TaskList = (props) => {
       onItemChanged={props.onItemChanged}  
       toggleTaskEditor={props.toggleTaskEditor}
       changeTaskToEdit={props.changeTaskToEdit}
-      className={entry.completed ? "CompletedTask" : "Task"} />))
+      togglePriorityBar={props.togglePriorityBar}
+      className={entry.completed ? "CompletedTask " + entry.priority : "Task " + entry.priority}/>))
 }
 export default TaskList;  

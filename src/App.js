@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import Header from './Header.js';
+import PriorityBar from './PriorityBar.js'
 import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
 import DeletedButton from './DeletedButton.js';
@@ -32,6 +33,7 @@ const collectionName = "tasks";
 function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
+  const [showPriorityBar, setShowPriorityBar] = useState(false);
 
   const q = query(collection(db, collectionName));
   const [tasks, loading, error] = useCollectionData(q);
@@ -42,7 +44,8 @@ function App(props) {
     setDoc(doc(db, collectionName, uniqueId),
      {id: uniqueId, 
       task:taskName, 
-      completed:false
+      completed:false,
+      priority: "low"
     });
   }
 
@@ -54,16 +57,18 @@ function App(props) {
     setShowTaskEditor(!showTaskEditor);
   }
 
+  function togglePriorityBar(){
+    setShowPriorityBar(!showPriorityBar);
+  }
+
   function changeTaskToEdit(taskDescription){
     setTaskToEdit(taskDescription);
   }
 
   function deleteCompletedTasks() {
-    // setTask(tasks.filter(t => !t.completed));
     tasks.forEach((task) => {
       if(task.completed){
         deleteDoc(doc(db, collectionName, task.id));
-        console.log('deleted doc');
       }
     })
   }
@@ -78,9 +83,10 @@ function App(props) {
 
   return (<div className="container">
     <Header/>
-    <ToggleBar onAddTask={handleAdd} data={tasks} onItemChanged={onItemChanged} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor}/>  
+    <ToggleBar onAddTask={handleAdd} data={tasks} onItemChanged={onItemChanged} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor} togglePriorityBar={togglePriorityBar}/>  
     <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}
+    {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}
   </div>);
 }
 

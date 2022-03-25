@@ -46,3 +46,14 @@ We started with less components, but found that we needed more components in ord
 
 We had the most challenges when creating the edit feature and implementing the modal.
 We are the most proud of the edit feature that implements a modal.
+
+
+##### Lab 3 Design
+
+For lab 3, we did not need to change much in terms of design. However, we still needed to make some design decisions and do user testing. 
+
+For our current design, we needed to add a way to create a way for the user to set and change the priority of a given task. To do this, we decided to add a new button to the task bar that would trigger a pop up for changing the priority.
+
+We started by adding the priority change feature to the same pop up as the task editor, but after talking to a few users while user testing they found that this was confusing. Instead, we decided to add a new separate button on each task to change the priority of the task.
+
+We decided to signify that green meant the task was low priority and that red would signify high priority. We decided this after asking test users what colors they thought were most intuitive to go with high and low priority tasks. We also decided that completed tasks should have no priority since they are already done.

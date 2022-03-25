@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+
+
 
 
 const Task = (props) => {
@@ -8,9 +11,18 @@ const Task = (props) => {
           <div className={"col-12"}>
               <div className={props.className}>
                 <div className="row">
-                  <div className="col-10" onClick={() => props.onItemChanged(props.task.id, "completed", !props.task.completed)}>
+                  <div className="col-8" onClick={() => props.onItemChanged(props.task.id, "completed", !props.task.completed)}>
                     {props.task.task}
                   </div>
+
+                  <div className='col-2 justify-content-center' onClick={() => {
+                  props.changeTaskToEdit(props.task);
+                  props.togglePriorityBar();
+                  }}>
+
+                    <FontAwesomeIcon icon={faClock} name="priorityButton" size="sm" />
+                  </div>
+
                   <div className="col-2 justify-content-center" onClick={() => {
                     props.changeTaskToEdit(props.task);
                     props.toggleTaskEditor();
