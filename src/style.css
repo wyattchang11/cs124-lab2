@@ -19,9 +19,17 @@ body{
     margin-top: 5px;
 }
 
+.Task.low {
+    color: lightgreen;
+}
+
+.Task.high {
+    color:red
+}
+
 .Task{
     text-align: left;
-    color: antiquewhite !important;
+    color: antiquewhite;
     border-color:bisque;
     border-style: solid;
     border-width: 3px;
@@ -30,8 +38,11 @@ body{
     opacity: 62%;
     padding: 5px;
     display: inline-block;
+    min-width: 336px;
 
 }
+
+
 
 
 .AddNew{
@@ -44,6 +55,10 @@ body{
 .Header{
     text-align: center;
     font-size: 40px;
+}
+
+.justify-content-center{
+    text-align:center;
 }
 
 #time{
@@ -77,10 +92,18 @@ body{
 .SelectedTab{
     background-color:darkslategrey;
     min-width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    color: antiquewhite;
+    font-family: Georgia;
 }
 
 .Tab{
     background-color: grey;
+    border-radius: 5px;
+    text-align: center;
+    color: antiquewhite;
+    font-family: Georgia;
 }
 
 .CompletedTask{
@@ -99,6 +122,7 @@ body{
     text-decoration-thickness: 2px;
     opacity: 50%;
     height: 100%;
+    min-width: 336px;
 }
 
 
@@ -215,9 +239,28 @@ div FontAwesomeIcon{
     border-color:bisque;
 }
 
+.priority-button {
+    color:#6E7582;
+    background-color:antiquewhite;
+    border-color: bisque;
+}
 .taskEditor{
     background-color: white;
     border-color:bisque;
     border-radius:3px;
     border-width: 1px;
+}
+
+
+.taskDeleter{
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.trashIcon{
+    margin-left:10px;
+}
+
+#low {
+    color:blue
 }

@@ -4,7 +4,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 const DeletedButton = (props) => {
     return (
       <div>
-        <FontAwesomeIcon icon={faTrash} name="trashButton" size="xl" onClick={props.deleteCompletedTasks}/>
+        <button className={"taskDeleter col-12 alert-button alert-ok"} type={"button"} onClick={props.deleteCompletedTasks}>
+          Delete Completed Tasks
+          <FontAwesomeIcon className={"trashIcon"} icon={faTrash} name="trashButton" size="sm"/>
+        </button>
+
       </div>
     );
 }

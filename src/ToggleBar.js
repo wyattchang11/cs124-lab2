@@ -22,7 +22,7 @@ const ToggleBar = (props) => {
       </div>
       <TaskAdder data={props.data} onAddTask={props.onAddTask}/>
       <div className="row">
-        <TaskList data={props.data} showAllTasks={showAllTasks} toggleTaskEditor={props.toggleTaskEditor} changeTaskToEdit={props.changeTaskToEdit} onItemChanged={props.onItemChanged} />
+        <TaskList data={props.data} showAllTasks={showAllTasks} toggleTaskEditor={props.toggleTaskEditor} togglePriorityBar={props.togglePriorityBar} changeTaskToEdit={props.changeTaskToEdit} onItemChanged={props.onItemChanged} onToggle/>
       </div>
     </div>);
 }
