@@ -7,6 +7,11 @@ const ToggleBar = (props) => {
     const [showAllTasks, setShowAllTasks] = useState(true);
     const displayAllTasks = () => setShowAllTasks(true);
     const hideCompletedTasks = () => setShowAllTasks(false);
+    
+    // const [currentTaskList, setCurrentTaskList] = useState(props.TaskList[0]);
+
+    // const q = query(collection("taskLists", collectionName, currentTaskList[0], "tasks"));
+
     return (<div>
       <div className="row">
         <div className="col-6" onClick={displayAllTasks}>

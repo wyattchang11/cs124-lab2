@@ -27,25 +27,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const collectionName = "tasks";
+const collectionName = "taskList";
 
 
 function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
+  const taskListQ = query(collection(db, collectionName));
+  const [taskList, loading, error] = useCollectionData(taskListQ);
 
-  const q = query(collection(db, collectionName));
-  const [tasks, loading, error] = useCollectionData(q);
-  console.log(tasks);
 
   function handleAdd(taskName) {
     const uniqueId = generateUniqueID();
     setDoc(doc(db, collectionName, uniqueId),
      {id: uniqueId, 
       task:taskName, 
-      completed:false,
-      priority: "low"
+      completed: false,
+      dateCreated: new Date().getTime(),
+      priority: "low",
     });
   }
 
@@ -83,7 +83,7 @@ function App(props) {
 
   return (<div className="container">
     <Header/>
-    <ToggleBar onAddTask={handleAdd} data={tasks} onItemChanged={onItemChanged} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor} togglePriorityBar={togglePriorityBar}/>  
+    <ToggleBar onAddTask={handleAdd} data={tasks} onItemChanged={onItemChanged} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor} togglePriorityBar={togglePriorityBar} db={db} collectionName={collectionName} taskList ={taskList}/>  
     <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}
     {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}

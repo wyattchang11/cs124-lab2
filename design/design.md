@@ -57,3 +57,8 @@ For our current design, we needed to add a way to create a way for the user to s
 We started by adding the priority change feature to the same pop up as the task editor, but after talking to a few users while user testing they found that this was confusing. Instead, we decided to add a new separate button on each task to change the priority of the task.
 
 We decided to signify that green meant the task was low priority and that red would signify high priority. We decided this after asking test users what colors they thought were most intuitive to go with high and low priority tasks. We also decided that completed tasks should have no priority since they are already done.
+
+
+#### Lab 4 Design
+
+Extensive thought went into whether or not we wanted to do a drop-down menu to navigate between tasks, or have a homepage with multiple task lists, 
