@@ -6,7 +6,8 @@ import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
 import DeletedButton from './DeletedButton.js';
 import {  useState } from 'react';
-import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
+import Filter from './Filter.js';
+
 
 import '../src/style.css';
 
@@ -34,27 +35,19 @@ function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const taskListQ = query(collection(db, collectionName));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
-  const [currentTaskList, setCurrentTaskList] = useState((taskLists && taskLists.length > 0) ? taskLists[0].id : "");
+
   // const [tasks, setTasks] = useState(currentTaskList !== "" ? : {})
   console.log(taskLists);
   console.log(error);
 
 
-  function toggleTaskList(newTaskList){
-    setCurrentTaskList(newTaskList);
-  }
-  function handleAdd(taskName) {
-    const uniqueId = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueId),
-     {id: uniqueId, 
-      task:taskName, 
-      completed: false,
-      dateCreated: new Date().getTime(),
-      priority: "low",
-    });
-  }
+  // function toggleTaskList(newTaskList){
+  //   setCurrentTaskList(newTaskList);
+  // }
+
 
   function onItemChanged(taskCollection, taskID, field, value) {
     updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), {[field]:value});
@@ -66,6 +59,10 @@ function App(props) {
 
   function togglePriorityBar(){
     setShowPriorityBar(!showPriorityBar);
+  }
+
+  function toggleFilter() {
+    setShowFilter(!showFilter);
   }
 
   function changeTaskToEdit(taskDescription){
@@ -81,7 +78,7 @@ function App(props) {
   }
   
   if (loading) {
-    <p>Loading</p>
+    return <p>Loading</p>;
   }
 
   if (error) {
@@ -90,10 +87,9 @@ function App(props) {
 
   return (<div className="container">
     <Header/>
-    <ToggleBar onAddTask={handleAdd} 
-                onItemChanged={onItemChanged} 
+    <ToggleBar  onItemChanged={onItemChanged} 
                 changeTaskToEdit={changeTaskToEdit} 
-                toggleTaskEditor={toggleTaskEditor} 
+                toggleFilter={toggleFilter}
                 togglePriorityBar={togglePriorityBar} 
                 db={db} 
                 collectionName={collectionName} 
@@ -105,6 +101,11 @@ function App(props) {
     {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} 
                                       taskToEdit={taskToEdit} 
                                       onItemChanged={onItemChanged}/>}
+    {showFilter && <Filter toggleFilter={toggleFilter} 
+                                      taskToEdit={taskToEdit} 
+                                      onItemChanged={onItemChanged}
+
+                                      />}
   </div>);
 }
 
