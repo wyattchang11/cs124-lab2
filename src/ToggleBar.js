@@ -1,17 +1,26 @@
 import TaskList from './TaskList.js';
 import TaskAdder from './TaskAdder.js';
 import { useState } from 'react';
-
+import {collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
+import {useCollectionData} from "react-firebase-hooks/firestore";
 
 const ToggleBar = (props) => {
     const [showAllTasks, setShowAllTasks] = useState(true);
     const displayAllTasks = () => setShowAllTasks(true);
     const hideCompletedTasks = () => setShowAllTasks(false);
-    
-    // const [currentTaskList, setCurrentTaskList] = useState(props.TaskList[0]);
+    const q = query(collection(props.db, "taskLists", "EQT3yNLD651XBmdGfM2L", "tasks"));
+    const [tasks, loading, error] = useCollectionData(q);
 
-    // const q = query(collection("taskLists", collectionName, currentTaskList[0], "tasks"));
 
+
+
+    if (loading) {
+      <p>Loading</p>
+    }
+  
+    if (error) {
+      <p>ERROR</p>
+    }
     return (<div>
       <div className="row">
         <div className="col-6" onClick={displayAllTasks}>
@@ -25,9 +34,9 @@ const ToggleBar = (props) => {
           </div>
         </div>
       </div>
-      <TaskAdder data={props.data} onAddTask={props.onAddTask}/>
+      <TaskAdder data={tasks} onAddTask={props.onAddTask}/>
       <div className="row">
-        <TaskList data={props.data} showAllTasks={showAllTasks} toggleTaskEditor={props.toggleTaskEditor} togglePriorityBar={props.togglePriorityBar} changeTaskToEdit={props.changeTaskToEdit} onItemChanged={props.onItemChanged} onToggle/>
+        <TaskList data={tasks} showAllTasks={showAllTasks} toggleTaskEditor={props.toggleTaskEditor} togglePriorityBar={props.togglePriorityBar} changeTaskToEdit={props.changeTaskToEdit} onItemChanged={props.onItemChanged} onToggle/>
       </div>
     </div>);
 }

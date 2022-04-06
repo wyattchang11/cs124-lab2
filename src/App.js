@@ -27,7 +27,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const collectionName = "taskList";
+const collectionName = "taskLists";
 
 
 function App(props) {
@@ -35,9 +35,16 @@ function App(props) {
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
   const taskListQ = query(collection(db, collectionName));
-  const [taskList, loading, error] = useCollectionData(taskListQ);
+  const [taskLists, loading, error] = useCollectionData(taskListQ);
+  const [currentTaskList, setCurrentTaskList] = useState((taskLists && taskLists.length > 0) ? taskLists[0].id : "");
+  // const [tasks, setTasks] = useState(currentTaskList !== "" ? : {})
+  console.log(taskLists);
+  console.log(error);
 
 
+  function toggleTaskList(newTaskList){
+    setCurrentTaskList(newTaskList);
+  }
   function handleAdd(taskName) {
     const uniqueId = generateUniqueID();
     setDoc(doc(db, collectionName, uniqueId),
@@ -49,8 +56,8 @@ function App(props) {
     });
   }
 
-  function onItemChanged(taskID, field, value) {
-    updateDoc(doc(db, collectionName, taskID), {[field]:value});
+  function onItemChanged(taskCollection, taskID, field, value) {
+    updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), {[field]:value});
   }
 
   function toggleTaskEditor(){
@@ -66,11 +73,11 @@ function App(props) {
   }
 
   function deleteCompletedTasks() {
-    tasks.forEach((task) => {
-      if(task.completed){
-        deleteDoc(doc(db, collectionName, task.id));
-      }
-    })
+    // tasks.forEach((task) => {
+    //   if(task.completed){
+    //     deleteDoc(doc(db, collectionName, task.id));
+    //   }
+    // })
   }
   
   if (loading) {
@@ -83,10 +90,21 @@ function App(props) {
 
   return (<div className="container">
     <Header/>
-    <ToggleBar onAddTask={handleAdd} data={tasks} onItemChanged={onItemChanged} changeTaskToEdit={changeTaskToEdit} toggleTaskEditor={toggleTaskEditor} togglePriorityBar={togglePriorityBar} db={db} collectionName={collectionName} taskList ={taskList}/>  
+    <ToggleBar onAddTask={handleAdd} 
+                onItemChanged={onItemChanged} 
+                changeTaskToEdit={changeTaskToEdit} 
+                toggleTaskEditor={toggleTaskEditor} 
+                togglePriorityBar={togglePriorityBar} 
+                db={db} 
+                collectionName={collectionName} 
+                taskLists={taskLists}/>  
     <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
-    {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}
-    {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} taskToEdit={taskToEdit} onItemChanged={onItemChanged}/>}
+    {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} 
+                                    taskToEdit={taskToEdit} 
+                                    onItemChanged={onItemChanged}/>}
+    {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} 
+                                      taskToEdit={taskToEdit} 
+                                      onItemChanged={onItemChanged}/>}
   </div>);
 }
 
