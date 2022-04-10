@@ -11,7 +11,7 @@ const PriorityBar = (props) => {
         <div className={"row align-items-center"}>     
                   <button className={"col-4 priority-button priority-low"} type={"button"} 
                           onClick={() => {
-                            props.onItemChanged(props.taskToEdit.id, "priority", "low");
+                            props.onItemChanged(props.taskListToEdit, props.taskToEdit.id, "priority", "low");
                             props.togglePriorityBar();
                             }}>
                     Low
@@ -19,14 +19,14 @@ const PriorityBar = (props) => {
 
                   <button className={"col-4 priority-button priority-medium"} type={"button"} 
                           onClick={() => {
-                            props.onItemChanged(props.taskToEdit.id, "priority", "medium");
+                            props.onItemChanged(props.taskListToEdit, props.taskToEdit.id, "priority", "medium");
                             props.togglePriorityBar();
                   }}>
                     Medium
                   </button>
                   <button className={"col-4 priority-button priority-high"} type={"button"} 
                           onClick={() => {
-                            props.onItemChanged(props.taskToEdit.id, "priority", "high");
+                            props.onItemChanged(props.taskListToEdit, props.taskToEdit.id, "priority", "high");
                             props.togglePriorityBar();
                   }}>
                     High

@@ -38,18 +38,13 @@ function App(props) {
   const [showFilter, setShowFilter] = useState(false);
   const taskListQ = query(collection(db, collectionName));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
-
-  // const [tasks, setTasks] = useState(currentTaskList !== "" ? : {})
+  const [taskListToEdit, setTaskListToEdit] = useState("");
   console.log(taskLists);
   console.log(error);
 
 
-  // function toggleTaskList(newTaskList){
-  //   setCurrentTaskList(newTaskList);
-  // }
-
-
   function onItemChanged(taskCollection, taskID, field, value) {
+    console.log("Calling On Item Changed", taskCollection, taskID, field, value);
     updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), {[field]:value});
   }
 
@@ -65,8 +60,9 @@ function App(props) {
     setShowFilter(!showFilter);
   }
 
-  function changeTaskToEdit(taskDescription){
+  function changeTaskToEdit(taskList, taskDescription){
     setTaskToEdit(taskDescription);
+    setTaskListToEdit(taskList);
   }
 
   function deleteCompletedTasks() {
@@ -91,20 +87,22 @@ function App(props) {
                 changeTaskToEdit={changeTaskToEdit} 
                 toggleFilter={toggleFilter}
                 togglePriorityBar={togglePriorityBar} 
+                toggleTaskEditor={toggleTaskEditor}
                 db={db} 
                 collectionName={collectionName} 
                 taskLists={taskLists}/>  
     <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} 
                                     taskToEdit={taskToEdit} 
+                                    taskListToEdit={taskListToEdit}
                                     onItemChanged={onItemChanged}/>}
     {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} 
                                       taskToEdit={taskToEdit} 
+                                      taskListToEdit={taskListToEdit}
                                       onItemChanged={onItemChanged}/>}
     {showFilter && <Filter toggleFilter={toggleFilter} 
                                       taskToEdit={taskToEdit} 
                                       onItemChanged={onItemChanged}
-
                                       />}
   </div>);
 }

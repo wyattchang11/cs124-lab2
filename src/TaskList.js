@@ -11,6 +11,7 @@ const TaskList = (props) => {
       key={entry.id} 
       task={entry} 
       onItemChanged={props.onItemChanged}  
+      taskCollectionId={props.taskCollectionId}
       toggleTaskEditor={props.toggleTaskEditor}
       changeTaskToEdit={props.changeTaskToEdit}
       togglePriorityBar={props.togglePriorityBar}

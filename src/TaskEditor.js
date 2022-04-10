@@ -16,7 +16,7 @@ const TaskEditor = (props) => {
                   <button className={"col-6 alert-button alert-ok"} type={"button"}
                           onClick={() => {
                             props.toggleTaskEditor();
-                            props.onItemChanged(props.taskToEdit.id, "task", inputValue);
+                            props.onItemChanged(props.taskListToEdit, props.taskToEdit.id, "task", inputValue);
                           }}>
                       OK
                   </button>
