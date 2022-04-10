@@ -1,5 +1,7 @@
 import TaskList from './TaskList.js';
 import TaskAdder from './TaskAdder.js';
+import Header from './Header.js';
+import Filter from'./Filter.js';
 
 import { useState } from 'react';
 import { collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */ } from "firebase/firestore";
@@ -13,9 +15,12 @@ const ToggleBar = (props) => {
   const [showAllTasks, setShowAllTasks] = useState(true);
   const displayAllTasks = () => setShowAllTasks(true);
   const hideCompletedTasks = () => setShowAllTasks(false);
+
   const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
   const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
+  const [showFilter, setShowFilter] = useState(false);
   const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName));
+
   const [tasks, loading, error] = useCollectionData(q);
 
 
@@ -46,17 +51,24 @@ const ToggleBar = (props) => {
     tasks = [...tasks].sort((a, b) => (a.creationTime < b.creationTime)? 1:-1)
   }
 
-  function sortByName() {
-    tasks = [...tasks].sort((a,b) => (a.task < b.task)? 1:-1)
+
+  function toggleFilter() {
+    setShowFilter(!showFilter);
   }
 
 
   if (loading) {
-    return <p>Loading</p>;
+    return (<div className="container">
+      <Header/>
+      <p>Loading</p>;
+    </div>);
   }
 
   if (error) {
-    <p>ERROR</p>
+    return (<div className="container">
+      <Header/>
+      <p>Error</p>;
+    </div>);
   }
   return (<div>
     <div className="row">
@@ -84,13 +96,18 @@ const ToggleBar = (props) => {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className='col-6'onClick={props.toggleFilter}>
+      <div className='col-6'onClick={toggleFilter}>
         <div className="Tab">
           Filter
         </div>
       </div>
     </div>
-    <TaskAdder data={tasks} onAddTask={handleAdd} />
+    {showFilter && <Filter toggleFilter={toggleFilter} 
+                                      taskToEdit={props.taskToEdit} 
+                                      onItemChanged={props.onItemChanged}
+                                      tasks={tasks}
+                                      />}
+    <TaskAdder data={tasks} onAddTask={props.onAddTask} />
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}
