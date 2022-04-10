@@ -56,7 +56,7 @@ function App(props) {
     setShowPriorityBar(!showPriorityBar);
   }
 
-  function changeTaskToEdit(taskDescription, taskList){
+  function changeTaskToEdit(taskList, taskDescription){
     setTaskToEdit(taskDescription);
     setTaskListToEdit(taskList);
   }
