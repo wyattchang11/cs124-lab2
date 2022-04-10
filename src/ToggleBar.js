@@ -107,7 +107,7 @@ const ToggleBar = (props) => {
                                       onItemChanged={props.onItemChanged}
                                       tasks={tasks}
                                       />}
-    <TaskAdder data={tasks} onAddTask={props.onAddTask} />
+    <TaskAdder data={tasks} onAddTask={handleAdd} />
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}
