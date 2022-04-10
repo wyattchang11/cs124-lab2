@@ -16,4 +16,4 @@ const TaskList = (props) => {
       togglePriorityBar={props.togglePriorityBar}
       className={entry.completed ? "CompletedTask " + entry.priority : "Task " + entry.priority}/>))
 }
-export default TaskList;  
+export default TaskList;

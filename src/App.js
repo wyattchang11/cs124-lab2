@@ -35,7 +35,7 @@ function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
+  
   const taskListQ = query(collection(db, collectionName));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
 
@@ -61,10 +61,6 @@ function App(props) {
     setShowPriorityBar(!showPriorityBar);
   }
 
-  function toggleFilter() {
-    setShowFilter(!showFilter);
-  }
-
   function changeTaskToEdit(taskDescription){
     setTaskToEdit(taskDescription);
   }
@@ -78,18 +74,23 @@ function App(props) {
   }
   
   if (loading) {
-    return <p>Loading</p>;
+    return (<div className="container">
+      <Header/>
+      <p>Loading</p>;
+    </div>);
   }
 
   if (error) {
-    <p>ERROR</p>
+    return (<div className="container">
+      <Header/>
+      <p>Error</p>;
+    </div>);
   }
 
   return (<div className="container">
     <Header/>
     <ToggleBar  onItemChanged={onItemChanged} 
                 changeTaskToEdit={changeTaskToEdit} 
-                toggleFilter={toggleFilter}
                 togglePriorityBar={togglePriorityBar} 
                 db={db} 
                 collectionName={collectionName} 
@@ -101,11 +102,6 @@ function App(props) {
     {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} 
                                       taskToEdit={taskToEdit} 
                                       onItemChanged={onItemChanged}/>}
-    {showFilter && <Filter toggleFilter={toggleFilter} 
-                                      taskToEdit={taskToEdit} 
-                                      onItemChanged={onItemChanged}
-
-                                      />}
   </div>);
 }
 
