@@ -39,6 +39,8 @@ function App(props) {
   const taskListQ = query(collection(db, collectionName));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
+  const [taskOrder, setTaskOrder] = useState("task");
+  const [showFilter, setShowFilter] = useState(false);
   console.log(taskLists);
   console.log(error);
 
@@ -56,18 +58,20 @@ function App(props) {
     setShowPriorityBar(!showPriorityBar);
   }
 
+  function toggleFilter() {
+    setShowFilter(!showFilter);
+  }
+
   function changeTaskToEdit(taskList, taskDescription){
     setTaskToEdit(taskDescription);
     setTaskListToEdit(taskList);
   }
 
-  function deleteCompletedTasks() {
-    // tasks.forEach((task) => {
-    //   if(task.completed){
-    //     deleteDoc(doc(db, collectionName, task.id));
-    //   }
-    // })
+  function changeTaskOrder(newTaskOrder){
+    setTaskOrder(newTaskOrder);
   }
+  
+
   
   if (loading) {
     return (<div className="container">
@@ -91,8 +95,10 @@ function App(props) {
                 toggleTaskEditor={toggleTaskEditor}
                 db={db} 
                 collectionName={collectionName} 
-                taskLists={taskLists}/>  
-    <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
+                taskLists={taskLists}
+                taskOrder={taskOrder}
+                toggleFilter={toggleFilter}/>  
+
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} 
                                     taskToEdit={taskToEdit} 
                                     taskListToEdit={taskListToEdit}
@@ -101,6 +107,9 @@ function App(props) {
                                       taskToEdit={taskToEdit} 
                                       taskListToEdit={taskListToEdit}
                                       onItemChanged={onItemChanged}/>}
+    {showFilter && <Filter toggleFilter={toggleFilter} 
+                           changeTaskOrder={changeTaskOrder}
+                                  />}
   </div>);
 }
 

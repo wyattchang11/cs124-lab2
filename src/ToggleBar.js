@@ -4,11 +4,11 @@ import Header from './Header.js';
 import Filter from'./Filter.js';
 
 import { useState } from 'react';
-import { collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */ } from "firebase/firestore";
+import { collection, deleteDoc, doc, getFirestore, updateDoc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import DeletedButton from './DeletedButton.js';
 
 const subCollectionName = "tasks";
 const ToggleBar = (props) => {
@@ -18,12 +18,13 @@ const ToggleBar = (props) => {
 
   const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
   const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
-  const [showFilter, setShowFilter] = useState(false);
-  const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName));
+  const ascOrDesc = props.taskOrder === "task" ? "asc" : "desc";
+  console.log(ascOrDesc);
+  const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
 
   const [tasks, loading, error] = useCollectionData(q);
 
-
+  console.log(props.taskOrder);
   function changeTaskList(newTaskList) {
     setCurrentTaskListId(newTaskList.id);
     setCurrentTaskListName(newTaskList.name);
@@ -32,7 +33,7 @@ const ToggleBar = (props) => {
 
   function handleAdd(taskName) {
     const uniqueId = generateUniqueID();
-    setDoc(doc(props.db, props.collectionName, currentTaskListId, subCollectionName, uniqueId),
+    setDoc(doc(props.db, props.collectionName,  currentTaskListId, subCollectionName, uniqueId),
       {
         id: uniqueId,
         task: taskName,
@@ -40,6 +41,14 @@ const ToggleBar = (props) => {
         dateCreated: new Date().getTime(),
         priority: "low",
       });
+  }
+
+  function deleteCompletedTasks() {
+    tasks.forEach((task) => {
+      if(task.completed){
+        deleteDoc(doc(props.db, props.collectionName, currentTaskListId, subCollectionName, task.id));
+      }
+    })
   }
 
   // function onItemChanged(taskCollection, taskID, field, value) {
@@ -52,9 +61,6 @@ const ToggleBar = (props) => {
   }
 
 
-  function toggleFilter() {
-    setShowFilter(!showFilter);
-  }
 
 
   if (loading) {
@@ -90,23 +96,18 @@ const ToggleBar = (props) => {
             {currentTaskListName}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {props.taskLists.map(taskList => {
-              return <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)}>{taskList.name}</Dropdown.Item>
-            })}
+            {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)}>{taskList.name}</Dropdown.Item>)}
+          <Dropdown.Divider/>
+          <Dropdown.Item key="0">Add New Task List</Dropdown.Item> 
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className='col-6'onClick={toggleFilter}>
+      <div className='col-6' onClick={props.toggleFilter}>
         <div className="Tab">
           Filter
         </div>
       </div>
     </div>
-    {showFilter && <Filter toggleFilter={toggleFilter} 
-                                      taskToEdit={props.taskToEdit} 
-                                      onItemChanged={props.onItemChanged}
-                                      tasks={tasks}
-                                      />}
     <TaskAdder data={tasks} onAddTask={handleAdd} />
     <div className="row">
       <TaskList data={tasks}
@@ -117,6 +118,7 @@ const ToggleBar = (props) => {
         changeTaskToEdit={props.changeTaskToEdit}
         onItemChanged={props.onItemChanged} onToggle />
     </div>
+    <DeletedButton deleteCompletedTasks={deleteCompletedTasks}/>
   </div>);
 }
 export default ToggleBar;
