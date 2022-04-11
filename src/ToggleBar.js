@@ -88,7 +88,7 @@ const ToggleBar = (props) => {
     <div className="row">
       <div className="col-6">
         <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
+          <Dropdown.Toggle variant="success" id="dropdown-basic" className={"taskLists"}>
             {currentTaskListName}
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -99,8 +99,8 @@ const ToggleBar = (props) => {
         </Dropdown>
       </div>
       <div className='col-6' onClick={props.toggleFilter}>
-        <div className="Tab">
-          Filter
+        <div className="Tab Sorter">
+          Sort by: {props.taskOrder}
         </div>
       </div>
     </div>
