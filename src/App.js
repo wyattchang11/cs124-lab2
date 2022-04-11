@@ -5,6 +5,7 @@ import PriorityBar from './PriorityBar.js'
 import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
 import DeletedButton from './DeletedButton.js';
+import TaskListAdder from './TaskListAdder';
 import {  useState } from 'react';
 import Filter from './Filter.js';
 
@@ -14,6 +15,8 @@ import '../src/style.css';
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
 import {collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
+import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
+import TaskList from './TaskList';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA56ajdAplN-Zf_wKrvBuhuxHvkXURp5lA",
@@ -35,12 +38,12 @@ function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
-  
+  const [showFilter, setShowFilter] = useState(false);
+  const [showTaskListAdder, setShowTaskListAdder] = useState(false);
   const taskListQ = query(collection(db, collectionName));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
   const [taskOrder, setTaskOrder] = useState("task");
-  const [showFilter, setShowFilter] = useState(false);
   console.log(taskLists);
   console.log(error);
 
@@ -60,6 +63,20 @@ function App(props) {
 
   function toggleFilter() {
     setShowFilter(!showFilter);
+  }
+
+  function toggleTaskListAdder(){
+    setShowTaskListAdder(!showTaskListAdder);
+  }
+
+  function addTaskList(taskListName){
+    const uniqueId = generateUniqueID();
+    setDoc(doc(db, collectionName, uniqueId), 
+      {
+        id: uniqueId,
+        name: taskListName
+      });
+
   }
 
   function changeTaskToEdit(taskList, taskDescription){
@@ -97,7 +114,8 @@ function App(props) {
                 collectionName={collectionName} 
                 taskLists={taskLists}
                 taskOrder={taskOrder}
-                toggleFilter={toggleFilter}/>  
+                toggleFilter={toggleFilter}
+                toggleTaskListAdder={toggleTaskListAdder}/>  
 
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} 
                                     taskToEdit={taskToEdit} 
@@ -110,6 +128,9 @@ function App(props) {
     {showFilter && <Filter toggleFilter={toggleFilter} 
                            changeTaskOrder={changeTaskOrder}
                                   />}
+    {showTaskListAdder && <TaskListAdder addTaskList={addTaskList} 
+                                         toggleTaskListAdder={toggleTaskListAdder}/>}
+                              
   </div>);
 }
 

@@ -56,10 +56,6 @@ const ToggleBar = (props) => {
   // }
 
 
-  function sortByDate() {
-    tasks = [...tasks].sort((a, b) => (a.creationTime < b.creationTime)? 1:-1)
-  }
-
 
 
 
@@ -98,7 +94,7 @@ const ToggleBar = (props) => {
           <Dropdown.Menu>
             {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)}>{taskList.name}</Dropdown.Item>)}
           <Dropdown.Divider/>
-          <Dropdown.Item key="0">Add New Task List</Dropdown.Item> 
+          <Dropdown.Item key="0" onClick={props.toggleTaskListAdder}>Add New Task List</Dropdown.Item> 
           </Dropdown.Menu>
         </Dropdown>
       </div>

@@ -12,7 +12,7 @@ const Header = (props) => {
     return <div className="row">
         <div className="col-12">
             <div className="Header">
-                <p id="time">{time.getHours()}:{time.getMinutes()}</p>
+                <p id="time">{time.getHours()}:{time.getMinutes().toString().length > 1 ? time.getMinutes() : "0" + time.getMinutes()}</p>
                 <p id="day">Today is {time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div>
         </div>
