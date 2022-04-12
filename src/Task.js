@@ -9,7 +9,7 @@ const Task = (props) => {
     return (<div>
         <div className={"row top-buffer"}>
           <div className={"col-12"}>
-              <div className={props.className}>
+              <button className={props.className} id="task">
                 <div className="row">
                   <div className="col-8" onClick={() => {
                     console.log(props.taskCollectionId, props.task.id);
@@ -18,24 +18,24 @@ const Task = (props) => {
                     {props.task.task}
                   </div>
 
-                  <div className='col-2 justify-content-center' onClick={() => {
-                  console.log(props.taskCollectionId, props.task.id);
+                  <button className='col-2 justify-content-center' onClick={() => {
+                  // console.log(props.taskCollectionId, props.task.id);
                   props.changeTaskToEdit(props.taskCollectionId, props.task);
                   props.togglePriorityBar();
                   }}>
 
                     <FontAwesomeIcon icon={faClock} name="priorityButton" size="sm" />
-                  </div>
+                  </button>
 
-                  <div className="col-2 justify-content-center" onClick={() => {
+                  <button className="col-2 justify-content-center" onClick={() => {
                     props.changeTaskToEdit(props.taskCollectionId, props.task);
                     props.toggleTaskEditor();
                   }}>
                     <FontAwesomeIcon icon={faEdit} name="editButton" size="sm"/>
-                  </div>
+                  </button>
                 </div>
                   
-              </div>
+              </button>
           </div>
         </div>
         
