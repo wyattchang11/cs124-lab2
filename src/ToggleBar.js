@@ -82,21 +82,21 @@ const ToggleBar = (props) => {
       </button>
     </div>
     <div className="row">
-      <div className="col-6">
+      <div className="col-6 smallPadding">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic" className={"taskLists"}>
             {currentTaskListName}
           </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)}>{taskList.name}</Dropdown.Item>)}
+          <Dropdown.Menu className={"dropdownMenu"}>
+            {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)} aria-label={taskList.name + ", click to select this task list"}>{taskList.name}</Dropdown.Item>)}
           <Dropdown.Divider/>
           <Dropdown.Item key="0" onClick={props.toggleTaskListAdder}>Add New Task List</Dropdown.Item> 
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className='col-6 CompletedBar' onClick={props.toggleFilter}>
+      <button className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">
-          Sort by: {props.taskOrder}
+          Sort by: {props.taskOrder === "task" ? "Alphabet" : (props.taskOrder === "priority" ? "Priority" : "Date" )}
         </div>
       </button>
     </div>

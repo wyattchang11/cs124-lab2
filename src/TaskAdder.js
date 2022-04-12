@@ -10,11 +10,11 @@ const TaskAdder = (props) => {
                 <input type="text" className="form-control" id="newTaskInput" placeholder="Enter New Task"
                     aria-label="Add Task" aria-describedby="addTaskButton" value={inputValue} onChange={(e) => updateInputState(e.target.value)}/>
                 <div className="input-group-append">
-                    <span className="input-group-text" id="addTaskButton" 
+                    <button className="input-group-text" id="addTaskButton" 
                     onClick={(e) => {
                         props.onAddTask(inputValue);
                         updateInputState("");
-                    }}>Submit</span>
+                    }}>Submit</button>
                 </div>
             </div>
         </div>

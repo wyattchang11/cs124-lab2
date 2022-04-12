@@ -61,13 +61,19 @@ We decided to signify that green meant the task was low priority and that red wo
 
 #### Lab 4 Design
 
-Extensive thought went into whether or not we wanted to do a drop-down menu to navigate between tasks, or have a homepage with multiple task lists, 
+Extensive thought went into whether or not we wanted to do a drop-down menu to navigate between tasks, or have a homepage with multiple task lists. We examined how the apps we use in our every day lives went about this process, and one of the things that stood out to us as a feature we really appreciated was the GitHub feature for switching between branches. We decided to model our design after this, as we felt that the relationship between branches and files/directories is very similar to that of task lists and tasks. We then tested the dropdown menu with potential users and asked for their opinions on the dropdown menu. Most users said they liked the design choice and that it was intuitive.
 
 
 #### Accessibility
 
-We also checked our contrast using the contrast checker. We found that our text to background contrast ratio was between 3-4. This fits with the guidelines for large texts, we decided that it would not need to be changed.
+We also checked our contrast using the contrast checker. We found that our text to background contrast ratio was between 3-4. This did not meet all the guidelines for all the text sizes. So, we decided to change the background to a darker color while maintaining our design principles of making the app seem natural and encouraging. After changing the background to a new gradient, it met all the color contrast criteria. We also retooled other colors to make sure they met the contrast criteria.
 
-We then checked for text size accessibility
+We then checked for text size accessibility. We found that all of our text sizes were large enough to meet the criteria.
 
-We then changed the focus and labels of our objects so that app was accessible without using the mouse. To start, the tasks themelves and the bar to toggle between showing all tasks and only uncompleted tasks. We changed this to ensure that our app was accessible for all users.
+We then changed the focus and labels of our objects so that app was accessible without using the mouse. To start, the tasks themelves and the bar to toggle between showing all tasks and only uncompleted tasks. We had to change many of the divs to buttons so that they could easily be tabbed through and navigated without a mouse. We changed this to ensure that our app was accessible for all users.
+
+#### Links to Youtube Videos
+
+https://youtu.be/fSNWB8LQc9o
+
+https://www.youtube.com/watch?v=6VaKvQIbCvA
