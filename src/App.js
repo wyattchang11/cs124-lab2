@@ -4,7 +4,6 @@ import Header from './Header.js';
 import PriorityBar from './PriorityBar.js'
 import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
-import DeletedButton from './DeletedButton.js';
 import TaskListAdder from './TaskListAdder';
 import {  useState } from 'react';
 import Filter from './Filter.js';
@@ -14,9 +13,8 @@ import '../src/style.css';
 
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
-import {collection, deleteDoc, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
+import {collection, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
-import TaskList from './TaskList';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA56ajdAplN-Zf_wKrvBuhuxHvkXURp5lA",

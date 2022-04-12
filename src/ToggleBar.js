@@ -4,7 +4,7 @@ import Header from './Header.js';
 
 
 import { useState } from 'react';
-import { collection, deleteDoc, doc, getFirestore, updateDoc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
+import { collection, deleteDoc, doc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 import Dropdown from 'react-bootstrap/Dropdown';
