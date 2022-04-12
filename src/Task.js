@@ -6,35 +6,42 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 
 const Task = (props) => {
-    return (<div>
-        <div className={"row top-buffer"}>
-          <div className={"col-12"}>
-              <div className={props.className}>
-                <div className="row">
-                  <div className="col-8" onClick={() => props.onItemChanged(props.task.id, "completed", !props.task.completed)}>
-                    {props.task.task}
-                  </div>
+  return (<div>
+    <div className={"row top-buffer"}>
+      <div className={"col-12"}>
+        <button className={props.className} id="task" aria-label={props.task.task + ", " + (props.task.priority === 0 ? "low" : (props.task.priority === 1 ? "medium" : "high")) + "priority click to complete"}>
+          <div className="row">
+            <div className="col-8" onClick={() => {
+              console.log(props.taskCollectionId, props.task.id);
+              props.onItemChanged(props.taskCollectionId, props.task.id, "completed", !props.task.completed);
+            }}>
+              {props.task.task}
+            </div>
 
-                  <div className='col-2 justify-content-center' onClick={() => {
-                  props.changeTaskToEdit(props.task);
-                  props.togglePriorityBar();
-                  }}>
+            <button className='col-2 justify-content-center' 
+            aria-label={"set priority"}
+            onClick={() => {
+              // console.log(props.taskCollectionId, props.task.id);
+              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.togglePriorityBar();
+            }}>
 
-                    <FontAwesomeIcon icon={faClock} name="priorityButton" size="sm" />
-                  </div>
+              <FontAwesomeIcon icon={faClock} name="priorityButton" size="sm" />
+            </button>
 
-                  <div className="col-2 justify-content-center" onClick={() => {
-                    props.changeTaskToEdit(props.task);
-                    props.toggleTaskEditor();
-                  }}>
-                    <FontAwesomeIcon icon={faEdit} name="editButton" size="sm"/>
-                  </div>
-                </div>
-                  
-              </div>
+            <button className="col-2 justify-content-center" onClick={() => {
+              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.toggleTaskEditor();
+            }}
+            aria-label={"edit task"}>
+              <FontAwesomeIcon icon={faEdit} name="editButton" size="sm" />
+            </button>
           </div>
-        </div>
-        
-      </div>)
+
+        </button>
+      </div>
+    </div>
+
+  </div>)
 }
 export default Task;
