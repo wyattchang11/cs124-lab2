@@ -62,3 +62,12 @@ We decided to signify that green meant the task was low priority and that red wo
 #### Lab 4 Design
 
 Extensive thought went into whether or not we wanted to do a drop-down menu to navigate between tasks, or have a homepage with multiple task lists, 
+
+
+#### Accessibility
+
+We also checked our contrast using the contrast checker. We found that our text to background contrast ratio was between 3-4. This fits with the guidelines for large texts, we decided that it would not need to be changed.
+
+We then checked for text size accessibility
+
+We then changed the focus and labels of our objects so that app was accessible without using the mouse. To start, the tasks themelves and the bar to toggle between showing all tasks and only uncompleted tasks. We changed this to ensure that our app was accessible for all users.

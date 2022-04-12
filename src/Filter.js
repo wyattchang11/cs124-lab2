@@ -15,11 +15,13 @@ const Filter = (props) => {
                           onClick={() => {
                             props.changeTaskOrder("task");
                             props.toggleFilter();
-                            }}>
+                            }} 
+                            tabIndex="0">
                     Name
                   </button>
 
                   <button className={"col-4 priority-button"} type={"button"} 
+                          tabIndex="1"
                           onClick={() => {
                             props.changeTaskOrder("priority");
                             props.toggleFilter();
@@ -27,7 +29,8 @@ const Filter = (props) => {
                     Priority
                   </button>
 
-                  <button className={"col-4 priority-button"} type={"button"} 
+                  <button className={"col-4 priority-button"} type={"button"}
+                          tabIndex="2" 
                           onClick={() => {
                             props.changeTaskOrder("dateCreated");
                             props.toggleFilter();

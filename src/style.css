@@ -28,6 +28,7 @@ body{
 }
 
 .Task{
+    background: none;
     text-align: left;
     color: antiquewhite;
     border-color:bisque;
@@ -37,11 +38,31 @@ body{
     font-size: 30px;
     opacity: 62%;
     padding: 5px;
-    display: inline-block;
+    /* display: inline-block; */
     min-width: 336px;
 
 }
 
+.CompletedTask{
+    background: none;
+    text-align: left;
+    color: antiquewhite;
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 30px;
+    opacity: 62%;
+    padding: 5px;
+    /* display: inline-block; */
+    min-width: 336px;
+
+}
+
+.CompletedBar {
+    background:none;
+    border:none;
+}
 
 
 
@@ -59,6 +80,9 @@ body{
 
 .justify-content-center{
     text-align:center;
+    background: none;
+    border: none;
+    color: antiquewhite;
 }
 
 #time{

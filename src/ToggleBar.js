@@ -1,7 +1,7 @@
 import TaskList from './TaskList.js';
 import TaskAdder from './TaskAdder.js';
 import Header from './Header.js';
-import Filter from'./Filter.js';
+
 
 import { useState } from 'react';
 import { collection, deleteDoc, doc, getFirestore, updateDoc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
@@ -39,7 +39,7 @@ const ToggleBar = (props) => {
         task: taskName,
         completed: false,
         dateCreated: new Date().getTime(),
-        priority: "low",
+        priority: 0,
       });
   }
 
@@ -54,10 +54,6 @@ const ToggleBar = (props) => {
   // function onItemChanged(taskCollection, taskID, field, value) {
   //   updateDoc(doc(props.db, collectionName, currentTaskListId, subCollectionName, taskID), {[field]:value});
   // }
-
-
-
-
 
   if (loading) {
     return (<div className="container">
@@ -74,16 +70,16 @@ const ToggleBar = (props) => {
   }
   return (<div>
     <div className="row">
-      <div className="col-6" onClick={displayAllTasks}>
+      <button className="col-6 CompletedBar" onClick={displayAllTasks}>
         <div className={showAllTasks ? "SelectedTab" : "Tab"}>
           All Tasks
         </div>
-      </div>
-      <div className="col-6" onClick={hideCompletedTasks}>
+      </button>
+      <button className="col-6 CompletedBar" onClick={hideCompletedTasks}>
         <div className={showAllTasks ? "Tab" : "SelectedTab"}>
           Outstanding Tasks
         </div>
-      </div>
+      </button>
     </div>
     <div className="row">
       <div className="col-6">
@@ -98,11 +94,11 @@ const ToggleBar = (props) => {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className='col-6' onClick={props.toggleFilter}>
+      <div className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">
           Sort by: {props.taskOrder}
         </div>
-      </div>
+      </button>
     </div>
     <TaskAdder data={tasks} onAddTask={handleAdd} />
     <div className="row">
