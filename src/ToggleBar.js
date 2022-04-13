@@ -1,5 +1,7 @@
 import TaskList from './TaskList.js';
 import TaskAdder from './TaskAdder.js';
+import TaskToggler from './TaskToggler.js';
+import TaskListToggler from './TaskListToggler';
 import Header from './Header.js';
 
 
@@ -7,7 +9,6 @@ import { useState } from 'react';
 import { collection, deleteDoc, doc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
-import Dropdown from 'react-bootstrap/Dropdown';
 import DeletedButton from './DeletedButton.js';
 
 const subCollectionName = "tasks";
@@ -69,31 +70,10 @@ const ToggleBar = (props) => {
     </div>);
   }
   return (<div>
+    <TaskToggler showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
     <div className="row">
-      <button className="col-6 CompletedBar" onClick={displayAllTasks}>
-        <div className={showAllTasks ? "SelectedTab" : "Tab"}>
-          All Tasks
-        </div>
-      </button>
-      <button className="col-6 CompletedBar" onClick={hideCompletedTasks}>
-        <div className={showAllTasks ? "Tab" : "SelectedTab"}>
-          Outstanding Tasks
-        </div>
-      </button>
-    </div>
-    <div className="row">
-      <div className="col-6 smallPadding">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic" className={"taskLists"}>
-            {currentTaskListName}
-          </Dropdown.Toggle>
-          <Dropdown.Menu className={"dropdownMenu"}>
-            {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)} aria-label={taskList.name + ", click to select this task list"}>{taskList.name}</Dropdown.Item>)}
-          <Dropdown.Divider/>
-          <Dropdown.Item key="0" onClick={props.toggleTaskListAdder}>Add New Task List</Dropdown.Item> 
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+      <TaskListToggler currentTaskListName={currentTaskListName} taskLists={props.taskLists} changeTaskList={changeTaskList} toggleTaskListAdder={props.toggleTaskListAdder}/>
+
       <button className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">
           Sort by: {props.taskOrder === "task" ? "Alphabet" : (props.taskOrder === "priority" ? "Priority" : "Date" )}

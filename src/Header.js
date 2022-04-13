@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGroup} from '@fortawesome/free-solid-svg-icons';
+
 
 const Header = (props) => {
     const [time, setTime] = useState(new Date());
@@ -10,11 +13,14 @@ const Header = (props) => {
       };
     }, []);
     return <div className="row">
-        <div className="col-12">
+        <div className="col-10">
             <div className="Header">
                 <p id="time">{time.getHours()}:{time.getMinutes().toString().length > 1 ? time.getMinutes() : "0" + time.getMinutes()}</p>
                 <p id="day">Today is {time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div>
+        </div>
+        <div className="col-2">
+          <FontAwesomeIcon className={"shareIcon"} icon={faUserGroup} size="2x"/>
         </div>
     </div>
 } 

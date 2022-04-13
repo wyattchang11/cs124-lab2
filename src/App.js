@@ -16,6 +16,19 @@ import {initializeApp} from "firebase/app";
 import {collection, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 
+
+import {
+  getAuth,
+  sendEmailVerification,
+  signOut } from "firebase/auth";
+
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle
+} from 'react-firebase-hooks/auth';
+
 const firebaseConfig = {
   apiKey: "AIzaSyA56ajdAplN-Zf_wKrvBuhuxHvkXURp5lA",
   authDomain: "cs124-lab3-4dca6.firebaseapp.com",
@@ -30,7 +43,17 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const collectionName = "taskLists";
+const auth = getAuth();
 
+
+function SignedOutApp() {
+  const [user, loadingAuth, errorAuth] = useAuthState(auth);
+
+  if (user) {
+    // <App/>
+  }
+  
+}
 
 function App(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
@@ -42,8 +65,6 @@ function App(props) {
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
   const [taskOrder, setTaskOrder] = useState("task");
-  console.log(taskLists);
-  console.log(error);
 
 
   function onItemChanged(taskCollection, taskID, field, value) {
@@ -72,7 +93,9 @@ function App(props) {
     setDoc(doc(db, collectionName, uniqueId), 
       {
         id: uniqueId,
-        name: taskListName
+        name: taskListName,
+        // hasAccess: [props.user.email],
+        // owner: props.user.uid
       });
 
   }

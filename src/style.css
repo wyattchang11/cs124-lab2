@@ -12,6 +12,8 @@ body{
 }
 
 
+
+
 .container{
     display: grid;
     row-gap: 20px;
@@ -49,9 +51,9 @@ body{
     padding: 5px;
     /* display: inline-block; */
     width: 100%;
-
 }
-
+    
+    
 .CompletedTask{
     background: none;
     text-align: left;
@@ -76,7 +78,6 @@ body{
     background:none;
     border:none;
 }
-
 
 
 .AddNew{
@@ -341,4 +342,16 @@ h3{
 
 .dropdownMenu{
     width: 100%;
+}
+
+.shareIcon{
+    float: right;
+    margin-top: .75rem;
+    margin-right: .25rem;
+}
+.TaskFocusButton{
+    background: none;
+    border: none;
+    color: antiquewhite;
+    text-align: left;
 }

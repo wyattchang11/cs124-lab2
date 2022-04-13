@@ -2,6 +2,7 @@ import Task from './Task.js';
 
 
 const TaskList = (props) => {
+    
     const data = props.showAllTasks ? props.data : props.data.filter(entry => !entry.completed);
     if(!data){
       return <p>NO DATA</p>;

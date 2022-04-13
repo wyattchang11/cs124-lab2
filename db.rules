@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+        return request.auth.uid != null;
+    }
+
+    function isDocOwner() {
+        return request.auth.uid == resource.data.owner;
+    }
+
+    function updatedDocHasCorrectOwner() {
+        return request.auth.uid == request.resource.data.owner;
+        }
+
+    function updatedDocHasSameOwner() {
+        return resource.data.owner == request.resource.data.owner;
+    }
+
+    function updatedDocHasSameSharing() {
+        return resource.data.sharedWith == request.resource.data.sharedWith;
+    }
+
+    function isSharedWithMe() {
+        return request.auth.token.email in resource.data.sharedWith;
+    }
+
+    match /TaskLists/{tasksListID} {
+        allow read: if signedIn() && isDocOwner();
+        allow create: if signedIn() && updatedDocHasCorrectOwner();
+    }
+  }
+}
+
+
+// array with hasAccess with emails of all the people's id who have access
+
+// query to get all taskLists we have access to ,where hasAccess array-contains user.email
