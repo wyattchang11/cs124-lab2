@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserGroup} from '@fortawesome/free-solid-svg-icons';
+import { faUserGroup, faEllipsisVertical} from '@fortawesome/free-solid-svg-icons';
 
 
 const Header = (props) => {
@@ -20,6 +20,7 @@ const Header = (props) => {
             </div>
         </div>
         <div className="col-2">
+          <FontAwesomeIcon className={"taskListOptions"} icon={faEllipsisVertical} size="2x"/>
           <FontAwesomeIcon className={"shareIcon"} icon={faUserGroup} size="2x"/>
         </div>
     </div>

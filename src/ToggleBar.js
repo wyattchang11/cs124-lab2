@@ -1,5 +1,5 @@
 import TaskList from './TaskList.js';
-import TaskAdder from './TaskAdder.js';
+import InputField from './InputField.js';
 import TaskToggler from './TaskToggler.js';
 import TaskListToggler from './TaskListToggler';
 import Header from './Header.js';
@@ -80,7 +80,7 @@ const ToggleBar = (props) => {
         </div>
       </button>
     </div>
-    <TaskAdder data={tasks} onAddTask={handleAdd} />
+    <InputField placeholder={"Enter New Task"} onSubmit={handleAdd} />
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}

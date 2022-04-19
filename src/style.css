@@ -348,6 +348,13 @@ h3{
     float: right;
     margin-top: .75rem;
     margin-right: .25rem;
+
+}
+.taskListOptions{
+    float: right;
+    margin-top: .75rem;
+    margin-right: .25rem;
+    margin-left: 1rem;
 }
 .TaskFocusButton{
     background: none;

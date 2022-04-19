@@ -5,22 +5,25 @@ import PriorityBar from './PriorityBar.js'
 import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
 import TaskListAdder from './TaskListAdder';
-import {  useState } from 'react';
+import { useState } from 'react';
 import Filter from './Filter.js';
-
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import InputField from './InputField';
 
 import '../src/style.css';
 
-import {useCollectionData} from "react-firebase-hooks/firestore";
-import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, updateDoc, query, setDoc/* , serverTimestamp */} from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { initializeApp } from "firebase/app";
+import { collection, doc, getFirestore, updateDoc, query, setDoc, where/* , serverTimestamp */ } from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 
 
 import {
   getAuth,
   sendEmailVerification,
-  signOut } from "firebase/auth";
+  signOut
+} from "firebase/auth";
 
 import {
   useAuthState,
@@ -46,22 +49,43 @@ const collectionName = "taskLists";
 const auth = getAuth();
 
 
-function SignedOutApp() {
+function App(props) {
   const [user, loadingAuth, errorAuth] = useAuthState(auth);
-
-  if (user) {
-    // <App/>
+  function verifyEmail() {
+    sendEmailVerification(user);
   }
-  
+
+  if (loadingAuth) {
+    return <p>Checking...</p>;
+  } else if (user) {
+    return <div>
+      {user.displayName || user.email}
+      <SignedInApp {...props} user={user} />
+      <button type="button" onClick={() => signOut(auth)}>Sign out</button>
+      {!user.emailVerified && <button type="button" onClick={verifyEmail}>Verify email</button>}
+    </div>
+  } else {
+    return <>
+      {errorAuth && <p>Error App: {errorAuth.message}</p>}
+      <SignIn auth={auth} key="Sign In" />
+      <SignUp auth={auth} key="Sign Up" />
+    </>
+  }
 }
 
-function App(props) {
+
+
+
+
+
+
+function SignedInApp(props) {
   const [showTaskEditor, setShowTaskEditor] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
   const [showPriorityBar, setShowPriorityBar] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showTaskListAdder, setShowTaskListAdder] = useState(false);
-  const taskListQ = query(collection(db, collectionName));
+  const taskListQ = query(collection(db, collectionName), where("owner", "==", props.user.uid));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
   const [taskOrder, setTaskOrder] = useState("task");
@@ -69,14 +93,14 @@ function App(props) {
 
   function onItemChanged(taskCollection, taskID, field, value) {
     console.log("Calling On Item Changed", taskCollection, taskID, field, value);
-    updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), {[field]:value});
+    updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), { [field]: value });
   }
 
-  function toggleTaskEditor(){
+  function toggleTaskEditor() {
     setShowTaskEditor(!showTaskEditor);
   }
 
-  function togglePriorityBar(){
+  function togglePriorityBar() {
     setShowPriorityBar(!showPriorityBar);
   }
 
@@ -84,74 +108,74 @@ function App(props) {
     setShowFilter(!showFilter);
   }
 
-  function toggleTaskListAdder(){
+  function toggleTaskListAdder() {
     setShowTaskListAdder(!showTaskListAdder);
   }
 
-  function addTaskList(taskListName){
+  function addTaskList(taskListName) {
     const uniqueId = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueId), 
+    setDoc(doc(db, collectionName, uniqueId),
       {
         id: uniqueId,
         name: taskListName,
-        // hasAccess: [props.user.email],
-        // owner: props.user.uid
+        hasAccess: [props.user.email],
+        owner: props.user.uid
       });
 
   }
 
-  function changeTaskToEdit(taskList, taskDescription){
+  function changeTaskToEdit(taskList, taskDescription) {
     setTaskToEdit(taskDescription);
     setTaskListToEdit(taskList);
   }
 
-  function changeTaskOrder(newTaskOrder){
+  function changeTaskOrder(newTaskOrder) {
     setTaskOrder(newTaskOrder);
   }
-  
 
-  
+
+
   if (loading) {
     return (<div className="container">
-      <Header/>
+      <Header />
       <p>Loading</p>;
     </div>);
   }
 
   if (error) {
     return (<div className="container">
-      <Header/>
-      <p>Error</p>;
+      <Header />
+      <p>{error.message}</p>;
     </div>);
   }
 
   return (<div className="container">
-    <Header/>
-    <ToggleBar  onItemChanged={onItemChanged} 
-                changeTaskToEdit={changeTaskToEdit} 
-                togglePriorityBar={togglePriorityBar} 
-                toggleTaskEditor={toggleTaskEditor}
-                db={db} 
-                collectionName={collectionName} 
-                taskLists={taskLists}
-                taskOrder={taskOrder}
-                toggleFilter={toggleFilter}
-                toggleTaskListAdder={toggleTaskListAdder}/>  
+    <Header />
+    {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
+      changeTaskToEdit={changeTaskToEdit}
+      togglePriorityBar={togglePriorityBar}
+      toggleTaskEditor={toggleTaskEditor}
+      db={db}
+      collectionName={collectionName}
+      taskLists={taskLists}
+      taskOrder={taskOrder}
+      toggleFilter={toggleFilter}
+      toggleTaskListAdder={toggleTaskListAdder}/>) : <InputField placeholder={"Enter New Task List"} onSubmit={addTaskList}/> }
 
-    {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor} 
-                                    taskToEdit={taskToEdit} 
-                                    taskListToEdit={taskListToEdit}
-                                    onItemChanged={onItemChanged}/>}
-    {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar} 
-                                      taskToEdit={taskToEdit} 
-                                      taskListToEdit={taskListToEdit}
-                                      onItemChanged={onItemChanged}/>}
-    {showFilter && <Filter toggleFilter={toggleFilter} 
-                           changeTaskOrder={changeTaskOrder}
-                                  />}
-    {showTaskListAdder && <TaskListAdder addTaskList={addTaskList} 
-                                         toggleTaskListAdder={toggleTaskListAdder}/>}
-                              
+    {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor}
+      taskToEdit={taskToEdit}
+      taskListToEdit={taskListToEdit}
+      onItemChanged={onItemChanged} />}
+    {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar}
+      taskToEdit={taskToEdit}
+      taskListToEdit={taskListToEdit}
+      onItemChanged={onItemChanged} />}
+    {showFilter && <Filter toggleFilter={toggleFilter}
+      changeTaskOrder={changeTaskOrder}
+    />}
+    {showTaskListAdder && <TaskListAdder addTaskList={addTaskList}
+      toggleTaskListAdder={toggleTaskListAdder} />}
+
   </div>);
 }
 
