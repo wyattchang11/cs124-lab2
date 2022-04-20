@@ -19,9 +19,15 @@ const Header = (props) => {
                 <p id="day">Today is {time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div>
         </div>
-        <div className="col-2">
-          <FontAwesomeIcon className={"taskListOptions"} icon={faEllipsisVertical} size="2x"/>
-          <FontAwesomeIcon className={"shareIcon"} icon={faUserGroup} size="2x"/>
+        <div className="button-group col-2">
+          <button className={"taskListOptions"}>
+            <FontAwesomeIcon icon={faEllipsisVertical} size="2x"/>
+          </button>
+          <button className={"shareIcon"} onClick={() => {props.toggleShowShare()}}>
+            <FontAwesomeIcon icon={faUserGroup} size="2x"/>
+          </button>
+          
+          
         </div>
     </div>
 } 

@@ -4,6 +4,7 @@ import Header from './Header.js';
 import PriorityBar from './PriorityBar.js'
 import TaskEditor from './TaskEditor.js';
 import ToggleBar from './ToggleBar.js';
+import Share from './Share.js';
 import TaskListAdder from './TaskListAdder';
 import { useState } from 'react';
 import Filter from './Filter.js';
@@ -15,7 +16,7 @@ import '../src/style.css';
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getFirestore, updateDoc, query, setDoc, where/* , serverTimestamp */ } from "firebase/firestore";
+import { collection, doc, getFirestore, updateDoc, arrayUnion, query, setDoc, where/* , serverTimestamp */ } from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 
 
@@ -89,11 +90,24 @@ function SignedInApp(props) {
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
   const [taskOrder, setTaskOrder] = useState("task");
+  const [showShare, setShowShare] = useState(false);
+  const [showTaskListInfo, setShowTaskListInfo] = useState(false);
 
 
   function onItemChanged(taskCollection, taskID, field, value) {
     console.log("Calling On Item Changed", taskCollection, taskID, field, value);
     updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), { [field]: value });
+  }
+
+  function shareTaskList(taskListName, userEmail) {
+    updateDoc(doc(db, collectionName, taskListName),
+      {
+        hasAccess: arrayUnion(props.userEmail)
+      });
+  }
+
+  function toggleShowShare() {
+    setShowShare(!showShare);
   }
 
   function toggleTaskEditor() {
@@ -133,8 +147,6 @@ function SignedInApp(props) {
     setTaskOrder(newTaskOrder);
   }
 
-
-
   if (loading) {
     return (<div className="container">
       <Header />
@@ -150,7 +162,7 @@ function SignedInApp(props) {
   }
 
   return (<div className="container">
-    <Header />
+    <Header toggleShowShare={toggleShowShare}/>
     {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
       changeTaskToEdit={changeTaskToEdit}
       togglePriorityBar={togglePriorityBar}
@@ -175,6 +187,12 @@ function SignedInApp(props) {
     />}
     {showTaskListAdder && <TaskListAdder addTaskList={addTaskList}
       toggleTaskListAdder={toggleTaskListAdder} />}
+
+    {showShare && <Share taskListName={taskListToEdit} 
+      shareTaskList={shareTaskList}
+      toggleShowShare={toggleShowShare} />}
+    
+    {showTaskListInfo && <></>}
 
   </div>);
 }

@@ -7,6 +7,7 @@ const SignUp = (props) => {
     ] = useCreateUserWithEmailAndPassword(props.auth);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     if (userCredential) {
         return <div>Signed up, unexpectedly</div>
@@ -19,12 +20,19 @@ const SignUp = (props) => {
         <input type="text" id='email' value={email}
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <label htmlFor='password'>password: </label>
-        <input type="text" id='password' value={password}
+        <label htmlFor='passwordSignIn'>password: </label>
+        <input type="password" id='passwordSignIn' value={password}
                onChange={e=>setPassword(e.target.value)}/>
         <br/>
-        <button onClick={() =>
-            createUserWithEmailAndPassword(email, password)}>
+        <label htmlFor='confirmPasswordSignIn'> Confirm password: </label>
+        <input type="password" id="confirmPasswordSignIn" value={confirmPassword}
+                onChange={e=>setConfirmPassword(e.target.value)}/>
+        <button onClick={() =>{
+            if(confirmPassword !== password){
+                alert("Passwords do not match");
+                return;
+            }
+            createUserWithEmailAndPassword(email, password)}}>
             Create test user
         </button>
 

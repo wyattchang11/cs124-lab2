@@ -26,8 +26,8 @@ const SignIn = (props) => {
         <input type="text" id='email' value={email}
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <label htmlFor='pw'>pw: </label>
-        <input type="text" id='pw' value={password}
+        <label htmlFor='pw'>password: </label>
+        <input type="password" id='passwordSignIn' value={password}
                onChange={e=>setPassword(e.target.value)}/>
         <br/>
         <button onClick={() =>signInWithEmailAndPassword(email, password)}>
