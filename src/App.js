@@ -104,7 +104,10 @@ function SignedInApp(props) {
   const [taskOrder, setTaskOrder] = useState("task");
   const [showShare, setShowShare] = useState(false);
   const [showTaskListInfo, setShowTaskListInfo] = useState(false);
+  const [sharedUsersList, setSharedUsersList] = useState([]);
 
+
+  const changeSharedUsersList = setSharedUsersList; 
 
   function onItemChanged(taskCollection, taskID, field, value) {
     console.log("Calling On Item Changed", taskCollection, taskID, field, value);
@@ -182,7 +185,9 @@ function SignedInApp(props) {
   }
 
   return (<div className="container">
-    <Header userName={props.displayName} auth={auth} signOut={signOut} toggleShowShare={toggleShowShare} toggleShowTaskListInfo={toggleShowTaskListInfo}/>
+    <Header userName={props.displayName} 
+    toggleShowShare={toggleShowShare} 
+    toggleShowTaskListInfo={toggleShowTaskListInfo}/>
     {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
       changeTaskToEdit={changeTaskToEdit}
       togglePriorityBar={togglePriorityBar}
@@ -193,6 +198,7 @@ function SignedInApp(props) {
       taskLists={taskLists}
       taskOrder={taskOrder}
       toggleFilter={toggleFilter}
+      changeSharedUsersList={changeSharedUsersList}
       toggleTaskListAdder={toggleTaskListAdder}/>) : <InputField placeholder={"Enter New Task List"} onSubmit={addTaskList}/> }
 
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor}
@@ -213,7 +219,8 @@ function SignedInApp(props) {
       toggleShowShare={toggleShowShare} />}
     
     {showTaskListInfo && <TaskListInfo taskList={currentTaskListName} 
-    toggleShowTaskListInfo={toggleShowTaskListInfo}/>}
+    toggleShowTaskListInfo={toggleShowTaskListInfo}
+    sharedUsersList={sharedUsersList}/>}
 
   </div>);
 }

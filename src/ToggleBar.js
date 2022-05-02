@@ -25,11 +25,14 @@ const ToggleBar = (props) => {
 
   const [tasks, loading, error] = useCollectionData(q);
 
-  useEffect(() => props.changeCurrentTaskListName(currentTaskListName), [])
+  useEffect(() => {
+    props.changeCurrentTaskListName(currentTaskListName);
+  }, [])
  
   function changeTaskList(newTaskList) {
     setCurrentTaskListId(newTaskList.id);
     setCurrentTaskListName(newTaskList.name);
+    props.changeCurrentTaskListName(currentTaskListName);
   }
   
 
