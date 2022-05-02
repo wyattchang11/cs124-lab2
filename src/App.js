@@ -32,6 +32,7 @@ import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle
 } from 'react-firebase-hooks/auth';
+import TaskListInfo from './TaskListInfo';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA56ajdAplN-Zf_wKrvBuhuxHvkXURp5lA",
@@ -60,9 +61,8 @@ function App(props) {
     return <p>Checking...</p>;
   } else if (user) {
     return <div>
-      {user.displayName || user.email}
-      <SignedInApp {...props} user={user} />
-      <button type="button" onClick={() => signOut(auth)}>Sign out</button>
+      {user.email}
+      <SignedInApp displayName={user.displayName} {...props} user={user} />
       {!user.emailVerified && <button type="button" onClick={verifyEmail}>Verify email</button>}
     </div>
   } else {
@@ -89,6 +89,7 @@ function SignedInApp(props) {
   const taskListQ = query(collection(db, collectionName), where("owner", "==", props.user.uid));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
+  const [currentTaskListName, setCurrentTaskListName] = useState("");
   const [taskOrder, setTaskOrder] = useState("task");
   const [showShare, setShowShare] = useState(false);
   const [showTaskListInfo, setShowTaskListInfo] = useState(false);
@@ -108,6 +109,10 @@ function SignedInApp(props) {
 
   function toggleShowShare() {
     setShowShare(!showShare);
+  }
+
+  function toggleShowTaskListInfo() {
+    setShowTaskListInfo(!showTaskListInfo);
   }
 
   function toggleTaskEditor() {
@@ -143,6 +148,10 @@ function SignedInApp(props) {
     setTaskListToEdit(taskList);
   }
 
+  function changeCurrentTaskListName(newName){
+    setCurrentTaskListName(newName);
+  }
+
   function changeTaskOrder(newTaskOrder) {
     setTaskOrder(newTaskOrder);
   }
@@ -162,12 +171,13 @@ function SignedInApp(props) {
   }
 
   return (<div className="container">
-    <Header toggleShowShare={toggleShowShare}/>
+    <Header userName={props.displayName} auth={auth} signOut={signOut} toggleShowShare={toggleShowShare} toggleShowTaskListInfo={toggleShowTaskListInfo}/>
     {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
       changeTaskToEdit={changeTaskToEdit}
       togglePriorityBar={togglePriorityBar}
       toggleTaskEditor={toggleTaskEditor}
       db={db}
+      changeCurrentTaskListName={changeCurrentTaskListName}
       collectionName={collectionName}
       taskLists={taskLists}
       taskOrder={taskOrder}
@@ -183,8 +193,7 @@ function SignedInApp(props) {
       taskListToEdit={taskListToEdit}
       onItemChanged={onItemChanged} />}
     {showFilter && <Filter toggleFilter={toggleFilter}
-      changeTaskOrder={changeTaskOrder}
-    />}
+      changeTaskOrder={changeTaskOrder} />}
     {showTaskListAdder && <TaskListAdder addTaskList={addTaskList}
       toggleTaskListAdder={toggleTaskListAdder} />}
 
@@ -192,7 +201,8 @@ function SignedInApp(props) {
       shareTaskList={shareTaskList}
       toggleShowShare={toggleShowShare} />}
     
-    {showTaskListInfo && <></>}
+    {showTaskListInfo && <TaskListInfo taskList={currentTaskListName} 
+    toggleShowTaskListInfo={toggleShowTaskListInfo}/>}
 
   </div>);
 }

@@ -348,9 +348,12 @@ h3{
     float: right;
     margin-top: .75rem;
     margin-right: .25rem;
-
+    background: none;
+    border: none;
 }
 .taskListOptions{
+    background: none;
+    border: none;
     float: right;
     margin-top: .75rem;
     margin-right: .25rem;

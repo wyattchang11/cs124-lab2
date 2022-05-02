@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 const Share = (props) => {
-    const [inputValue, setInputValue] = useState(props.taskToEdit.task);
+    const [inputValue, setInputValue] = useState(props.taskListName);
     const changeInputValue = (e) => setInputValue(e.target.value);
 
 
@@ -14,7 +14,7 @@ const Share = (props) => {
                   <input value={inputValue} onChange={changeInputValue} className={"taskEditor"}/>
         </div>
             <div className={"row align-items-center"}>
-                <button className={"col-6 alert-button alert-cancel"} type={"button"} onClick={props.toggleTaskEditor}>
+                <button className={"col-6 alert-button alert-cancel"} type={"button"} onClick={() => props.toggleShowShare()}>
                     Cancel
                 </button>
                 <button className={"col-6 alert-button alert-ok"} type={"button"}

@@ -20,16 +20,18 @@ const ToggleBar = (props) => {
   const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
   const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
   const ascOrDesc = props.taskOrder === "task" ? "asc" : "desc";
-  console.log(ascOrDesc);
+  
   const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
 
   const [tasks, loading, error] = useCollectionData(q);
 
-  console.log(props.taskOrder);
+  useEffect(() => props.changeCurrentTaskListName(currentTaskListName), [])
+ 
   function changeTaskList(newTaskList) {
     setCurrentTaskListId(newTaskList.id);
     setCurrentTaskListName(newTaskList.name);
   }
+  
 
 
   function handleAdd(taskName) {
