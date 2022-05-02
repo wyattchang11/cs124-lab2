@@ -13,21 +13,18 @@ const Header = (props) => {
       };
     }, []);
     return <div className="row">
-        <div className="col-10">
+        <div className="col-8">
             <div className="Header">
                 <p id="time">{time.getHours()}:{time.getMinutes().toString().length > 1 ? time.getMinutes() : "0" + time.getMinutes()}</p>
                 <p id="day">{props.userName !== "" && `Welcome, ${props.userName}!`} Today is {time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div> 
         </div>
-        <div className="button-group col-2">
-          <button className={"taskListOptions"} onClick={() => {props.signOut(props.auth)}}>
-            Sign Out
-          </button>
-          <button className={"taskListOptions"} onClick={() => props.toggleShowTaskListInfo()}>
-            <FontAwesomeIcon icon={faEllipsisVertical} size="2x"/>
-          </button>
-          <button className={"shareIcon"} onClick={() => props.toggleShowShare()}>
+        <div className="button-group col-4 headerButtons">
+          <button className={"topRightButtons"} onClick={() => props.toggleShowShare()}>
             <FontAwesomeIcon icon={faUserGroup} size="2x"/>
+          </button>
+          <button className={"topRightButtons"} onClick={() => props.toggleShowTaskListInfo()}>
+            <FontAwesomeIcon icon={faEllipsisVertical} size="2x"/>
           </button>
         </div>
     </div>

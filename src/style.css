@@ -344,20 +344,23 @@ h3{
     width: 100%;
 }
 
-.shareIcon{
-    float: right;
-    margin-top: .75rem;
-    margin-right: .25rem;
-    background: none;
-    border: none;
+.headerButtons{
+    text-align: right;
 }
-.taskListOptions{
-    background: none;
-    border: none;
-    float: right;
+
+.topRightButtons{
+    /* float: right; */
     margin-top: .75rem;
     margin-right: .25rem;
+    background: none;
+    border: none;
     margin-left: 1rem;
+}
+.signOutButton{
+    background: none;
+    border: none;
+    /* float: right; */
+    text-align: left;
 }
 .TaskFocusButton{
     background: none;
