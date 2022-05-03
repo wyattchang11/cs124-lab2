@@ -16,7 +16,10 @@ import '../src/style.css';
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getFirestore, updateDoc, arrayUnion, query, setDoc, where/* , serverTimestamp */ } from "firebase/firestore";
+import {
+  collection, doc, getFirestore, updateDoc, arrayUnion, query, setDoc, where,/* , serverTimestamp */
+  deleteDoc
+} from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
 
 
@@ -27,10 +30,7 @@ import {
 } from "firebase/auth";
 
 import {
-  useAuthState,
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-  useSignInWithGoogle
+  useAuthState
 } from 'react-firebase-hooks/auth';
 import TaskListInfo from './TaskListInfo';
 
@@ -100,25 +100,35 @@ function SignedInApp(props) {
   const taskListQ = query(collection(db, collectionName), where("owner", "==", props.user.uid));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
   const [taskListToEdit, setTaskListToEdit] = useState("");
-  const [currentTaskListName, setCurrentTaskListName] = useState("");
+  const [currentTaskList, setCurrentTaskList] = useState(null);
   const [taskOrder, setTaskOrder] = useState("task");
   const [showShare, setShowShare] = useState(false);
   const [showTaskListInfo, setShowTaskListInfo] = useState(false);
-  const [sharedUsersList, setSharedUsersList] = useState([]);
-
-
-  const changeSharedUsersList = setSharedUsersList; 
 
   function onItemChanged(taskCollection, taskID, field, value) {
     console.log("Calling On Item Changed", taskCollection, taskID, field, value);
     updateDoc(doc(db, collectionName, taskCollection, "tasks", taskID), { [field]: value });
   }
 
-  function shareTaskList(taskListName, userEmail) {
-    updateDoc(doc(db, collectionName, taskListName),
-      {
-        hasAccess: arrayUnion(props.userEmail)
-      });
+  function editTaskListName(taskListId, taskListName) {
+    updateDoc(doc(db, collectionName, taskListId), {
+      ...currentTaskList,
+      name: taskListName
+    });
+    setCurrentTaskList({ ...currentTaskList, name: taskListName });
+  }
+
+  function deleteTaskList(taskListId) {
+    deleteDoc(doc(db, collectionName, taskListId));
+    setCurrentTaskList(null);
+  }
+
+  function shareTaskList(taskListId, userEmail) {
+    console.log("Sharing Task List to ", taskListId, userEmail);
+    updateDoc(doc(db, collectionName, taskListId), {
+      ...currentTaskList,
+      hasAccess: arrayUnion(userEmail)
+    });
   }
 
   function toggleShowShare() {
@@ -147,13 +157,14 @@ function SignedInApp(props) {
 
   function addTaskList(taskListName) {
     const uniqueId = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueId),
-      {
-        id: uniqueId,
-        name: taskListName,
-        hasAccess: [props.user.email],
-        owner: props.user.uid
-      });
+    const task = {
+      id: uniqueId,
+      name: taskListName,
+      hasAccess: [props.user.email],
+      owner: props.user.uid
+    };
+    setDoc(doc(db, collectionName, uniqueId), task);
+    setCurrentTaskList(task);
 
   }
 
@@ -162,8 +173,10 @@ function SignedInApp(props) {
     setTaskListToEdit(taskList);
   }
 
-  function changeCurrentTaskListName(newName){
-    setCurrentTaskListName(newName);
+  function changeCurrentTaskList(newTaskList) {
+    setCurrentTaskList({
+      ...newTaskList
+    });
   }
 
   function changeTaskOrder(newTaskOrder) {
@@ -184,22 +197,28 @@ function SignedInApp(props) {
     </div>);
   }
 
+  if (currentTaskList === null) {
+    console.log(taskLists);
+    setCurrentTaskList(taskLists.length > 0 ? taskLists[0] : {});
+  }
+
   return (<div className="container">
-    <Header userName={props.displayName} 
-    toggleShowShare={toggleShowShare} 
-    toggleShowTaskListInfo={toggleShowTaskListInfo}/>
+    <Header userName={props.displayName}
+      toggleShowShare={toggleShowShare}
+      toggleShowTaskListInfo={toggleShowTaskListInfo} />
+    
     {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
       changeTaskToEdit={changeTaskToEdit}
       togglePriorityBar={togglePriorityBar}
       toggleTaskEditor={toggleTaskEditor}
       db={db}
-      changeCurrentTaskListName={changeCurrentTaskListName}
       collectionName={collectionName}
       taskLists={taskLists}
+      currentTaskList={currentTaskList}
+      changeCurrentTaskList={changeCurrentTaskList}
       taskOrder={taskOrder}
       toggleFilter={toggleFilter}
-      changeSharedUsersList={changeSharedUsersList}
-      toggleTaskListAdder={toggleTaskListAdder}/>) : <InputField placeholder={"Enter New Task List"} onSubmit={addTaskList}/> }
+      toggleTaskListAdder={toggleTaskListAdder} />) : <InputField placeholder={"Enter New Task List"} onSubmit={addTaskList} />}
 
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor}
       taskToEdit={taskToEdit}
@@ -214,13 +233,14 @@ function SignedInApp(props) {
     {showTaskListAdder && <TaskListAdder addTaskList={addTaskList}
       toggleTaskListAdder={toggleTaskListAdder} />}
 
-    {showShare && <Share taskListName={taskListToEdit} 
+    {showShare && <Share taskListId={currentTaskList.id}
       shareTaskList={shareTaskList}
       toggleShowShare={toggleShowShare} />}
-    
-    {showTaskListInfo && <TaskListInfo taskList={currentTaskListName} 
-    toggleShowTaskListInfo={toggleShowTaskListInfo}
-    sharedUsersList={sharedUsersList}/>}
+
+    {showTaskListInfo && <TaskListInfo taskList={currentTaskList}
+      toggleShowTaskListInfo={toggleShowTaskListInfo}
+      deleteTaskList={deleteTaskList}
+      editTaskListName={editTaskListName} />}
 
   </div>);
 }

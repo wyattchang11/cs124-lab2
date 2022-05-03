@@ -16,30 +16,24 @@ const ToggleBar = (props) => {
   const [showAllTasks, setShowAllTasks] = useState(true);
   const displayAllTasks = () => setShowAllTasks(true);
   const hideCompletedTasks = () => setShowAllTasks(false);
+  const currentTaskList = props.currentTaskList;
 
-  const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
-  const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
+  // const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
+  // const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
   const ascOrDesc = props.taskOrder === "task" ? "asc" : "desc";
   
-  const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
+
+  const q = query(collection(props.db, props.collectionName, currentTaskList.id, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
 
   const [tasks, loading, error] = useCollectionData(q);
 
-  useEffect(() => {
-    props.changeCurrentTaskListName(currentTaskListName);
-  }, [])
- 
-  function changeTaskList(newTaskList) {
-    setCurrentTaskListId(newTaskList.id);
-    setCurrentTaskListName(newTaskList.name);
-    props.changeCurrentTaskListName(currentTaskListName);
-  }
+
   
 
 
   function handleAdd(taskName) {
     const uniqueId = generateUniqueID();
-    setDoc(doc(props.db, props.collectionName,  currentTaskListId, subCollectionName, uniqueId),
+    setDoc(doc(props.db, props.collectionName,  currentTaskList.id, subCollectionName, uniqueId),
       {
         id: uniqueId,
         task: taskName,
@@ -52,7 +46,7 @@ const ToggleBar = (props) => {
   function deleteCompletedTasks() {
     tasks.forEach((task) => {
       if(task.completed){
-        deleteDoc(doc(props.db, props.collectionName, currentTaskListId, subCollectionName, task.id));
+        deleteDoc(doc(props.db, props.collectionName, currentTaskList.id, subCollectionName, task.id));
       }
     })
   }
@@ -77,7 +71,7 @@ const ToggleBar = (props) => {
   return (<div>
     <TaskToggler showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
     <div className="row">
-      <TaskListToggler currentTaskListName={currentTaskListName} taskLists={props.taskLists} changeTaskList={changeTaskList} toggleTaskListAdder={props.toggleTaskListAdder}/>
+      <TaskListToggler currentTaskListName={currentTaskList.name} taskLists={props.taskLists} changeCurrentTaskList={props.changeCurrentTaskList} toggleTaskListAdder={props.toggleTaskListAdder}/>
 
       <button className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">
@@ -89,7 +83,7 @@ const ToggleBar = (props) => {
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}
-        taskCollectionId={currentTaskListId}
+        taskCollectionId={currentTaskList}
         toggleTaskEditor={props.toggleTaskEditor}
         togglePriorityBar={props.togglePriorityBar}
         changeTaskToEdit={props.changeTaskToEdit}

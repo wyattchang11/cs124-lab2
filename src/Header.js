@@ -16,7 +16,7 @@ const Header = (props) => {
         <div className="col-8">
             <div className="Header">
                 <p id="time">{time.getHours()}:{time.getMinutes().toString().length > 1 ? time.getMinutes() : "0" + time.getMinutes()}</p>
-                <p id="day">{props.userName !== "" && `Welcome, ${props.userName}!`} Today is {time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
+                <p id="day">{time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div> 
         </div>
         <div className="button-group col-4 headerButtons">
