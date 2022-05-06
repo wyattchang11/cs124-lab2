@@ -12,8 +12,7 @@ const Task = (props) => {
         <div className={props.className} id="task" aria-label={props.task.task + ", " + (props.task.priority === 0 ? "low" : (props.task.priority === 1 ? "medium" : "high")) + "priority click to complete"}>
           <div className="row">
             <button className="col-8 TaskFocusButton" onClick={() => {
-              console.log(props.taskCollectionId, props.task.id);
-              props.onItemChanged(props.taskCollectionId, props.task.id, "completed", !props.task.completed);
+              props.onItemChanged(props.currentTaskList.id, props.task.id, "completed", !props.task.completed);
             }}>
               {props.task.task}
             </button>
@@ -21,8 +20,7 @@ const Task = (props) => {
             <button className='col-2 justify-content-center' 
             aria-label={"set priority"}
             onClick={() => {
-              // console.log(props.taskCollectionId, props.task.id);
-              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.changeTaskToEdit(props.currentTaskList.id, props.task);
               props.togglePriorityBar();
             }}>
 
@@ -30,7 +28,7 @@ const Task = (props) => {
             </button>
 
             <button className="col-2 justify-content-center" onClick={() => {
-              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.changeTaskToEdit(props.currentTaskList.id, props.task);
               props.toggleTaskEditor();
             }}
             aria-label={"edit task"}>

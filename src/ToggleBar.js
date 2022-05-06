@@ -51,10 +51,6 @@ const ToggleBar = (props) => {
     })
   }
 
-  // function onItemChanged(taskCollection, taskID, field, value) {
-  //   updateDoc(doc(props.db, collectionName, currentTaskListId, subCollectionName, taskID), {[field]:value});
-  // }
-
   if (loading) {
     return (<div className="container">
       <Header/>
@@ -83,7 +79,7 @@ const ToggleBar = (props) => {
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}
-        taskCollectionId={currentTaskList}
+        currentTaskList={currentTaskList}
         toggleTaskEditor={props.toggleTaskEditor}
         togglePriorityBar={props.togglePriorityBar}
         changeTaskToEdit={props.changeTaskToEdit}

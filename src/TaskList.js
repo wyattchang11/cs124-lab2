@@ -1,9 +1,11 @@
+import { consoleUrl } from 'firebase-tools/lib/utils';
 import Task from './Task.js';
 
 
 const TaskList = (props) => {
     
     const data = props.showAllTasks ? props.data : props.data.filter(entry => !entry.completed);
+    // console.log(data);
     if(!data){
       return <p>NO DATA</p>;
     }
@@ -12,7 +14,7 @@ const TaskList = (props) => {
       key={entry.id} 
       task={entry} 
       onItemChanged={props.onItemChanged}  
-      taskCollectionId={props.taskCollectionId}
+      currentTaskList={props.currentTaskList}
       toggleTaskEditor={props.toggleTaskEditor}
       changeTaskToEdit={props.changeTaskToEdit}
       togglePriorityBar={props.togglePriorityBar}

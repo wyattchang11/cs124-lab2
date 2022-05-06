@@ -99,7 +99,7 @@ function SignedInApp(props) {
   const [showTaskListAdder, setShowTaskListAdder] = useState(false);
   const taskListQ = query(collection(db, collectionName), where("owner", "==", props.user.uid));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
-  const [taskListToEdit, setTaskListToEdit] = useState("");
+  // const [taskListToEdit, setTaskListToEdit] = useState("");
   const [currentTaskList, setCurrentTaskList] = useState(null);
   const [taskOrder, setTaskOrder] = useState("task");
   const [showShare, setShowShare] = useState(false);
@@ -170,7 +170,7 @@ function SignedInApp(props) {
 
   function changeTaskToEdit(taskList, taskDescription) {
     setTaskToEdit(taskDescription);
-    setTaskListToEdit(taskList);
+    // setTaskListToEdit(taskList);
   }
 
   function changeCurrentTaskList(newTaskList) {
@@ -222,11 +222,11 @@ function SignedInApp(props) {
 
     {showTaskEditor && <TaskEditor toggleTaskEditor={toggleTaskEditor}
       taskToEdit={taskToEdit}
-      taskListToEdit={taskListToEdit}
+      currentTaskList={currentTaskList}
       onItemChanged={onItemChanged} />}
     {showPriorityBar && <PriorityBar togglePriorityBar={togglePriorityBar}
       taskToEdit={taskToEdit}
-      taskListToEdit={taskListToEdit}
+      currentTaskList={currentTaskList}
       onItemChanged={onItemChanged} />}
     {showFilter && <Filter toggleFilter={toggleFilter}
       changeTaskOrder={changeTaskOrder} />}
