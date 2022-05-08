@@ -65,7 +65,7 @@ const ToggleBar = (props) => {
     </div>);
   }
   return (<div>
-    <TaskToggler showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
+    <TaskToggler tasks={tasks} showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
     <div className="row">
       <TaskListToggler currentTaskListName={currentTaskList.name} taskLists={props.taskLists} changeCurrentTaskList={props.changeCurrentTaskList} user={props.user} toggleTaskListAdder={props.toggleTaskListAdder}/>
 

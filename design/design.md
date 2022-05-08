@@ -95,3 +95,5 @@ For this round, we did user testing with some of our classmates. from their feed
 Users also found that the sharing feature was intuitive as it was similar to other applications they have used in the past.
 
 Users also voiced it would be ideal for users to have the ability to mark tasks as completed if they were not the owners of the task list, along with having the ability to delete tasks that had been marked as completed.
+
+To demonstrate how many tasks were in both the All Tasks and Outstanding Tasks lists, we added a subtle number that represented the number of tasks in each list. When asked, the users we tested found this was an intuitive indication of how many tasks were in each list.
