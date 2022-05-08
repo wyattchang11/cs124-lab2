@@ -5,7 +5,7 @@ import TaskListToggler from './TaskListToggler';
 import Header from './Header.js';
 
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { collection, deleteDoc, doc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
@@ -67,7 +67,7 @@ const ToggleBar = (props) => {
   return (<div>
     <TaskToggler showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
     <div className="row">
-      <TaskListToggler currentTaskListName={currentTaskList.name} taskLists={props.taskLists} changeCurrentTaskList={props.changeCurrentTaskList} toggleTaskListAdder={props.toggleTaskListAdder}/>
+      <TaskListToggler currentTaskListName={currentTaskList.name} taskLists={props.taskLists} changeCurrentTaskList={props.changeCurrentTaskList} user={props.user} toggleTaskListAdder={props.toggleTaskListAdder}/>
 
       <button className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">

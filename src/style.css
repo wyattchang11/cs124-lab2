@@ -30,12 +30,16 @@ body{
     margin-top: 5px;
 }
 
-.Task.low {
+.low {
     color: lightgreen;
 }
 
-.Task.high {
-    color:rgb(253, 18, 18)
+.high {
+    color:rgb(253, 18, 18);
+}
+
+.medium{
+    color: antiquewhite;
 }
 
 .Task{
@@ -90,6 +94,11 @@ body{
 .Header{
     text-align: center;
     font-size: 40px;
+}
+
+.verify{
+    color: black;
+    
 }
 
 .justify-content-center{
@@ -258,6 +267,11 @@ div FontAwesomeIcon{
     border-color:bisque;
 }
 
+.margin{
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
 .priority-button {
     color:#6E7582;
     background-color:antiquewhite;
@@ -365,6 +379,19 @@ h3{
 .TaskFocusButton{
     background: none;
     border: none;
-    color: antiquewhite;
     text-align: left;
+}
+
+.sharedUsers{
+    border: none;
+    background: none;
+    text-align: left;
+}
+
+.notOwner{
+    color: inherit;
+}
+
+.owner{
+    color: #079807;
 }

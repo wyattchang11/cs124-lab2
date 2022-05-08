@@ -19,23 +19,24 @@ const SignIn = (props) => {
     else if (loadingEP || loadingGoogle) {
         return <p>Logging in…</p>
     }
-    return <div>
+    return <div className="margin">
         {errorEP && <p>"Error logging in: " {errorEP.message}</p>}
         {errorGoogle && <p>"Error logging in: " {errorGoogle.message}</p>}
-        <label htmlFor='email'>email: </label>
-        <input type="text" id='email' value={email}
-               onChange={e=>setEmail(e.target.value)}/>
-        <br/>
-        <label htmlFor='pw'>password: </label>
-        <input type="password" id='passwordSignIn' value={password}
+        <div className="row">
+            <label htmlFor='email'>Email: </label>
+            <input type="text" id='email' value={email}
+            onChange={e=>setEmail(e.target.value)}/>
+        </div>
+        <div className="row">
+            <label htmlFor='passwordSignIn'>Password: </label>
+            <input type="password" id='passwordSignIn' value={password}
                onChange={e=>setPassword(e.target.value)}/>
-        <br/>
-        <button onClick={() =>signInWithEmailAndPassword(email, password)}>
-            Sign in with email/password
+        </div>
+        <button className="alert-button alert-ok" onClick={() =>signInWithEmailAndPassword(email, password)}>
+            Sign in
         </button>
-
         <hr/>
-        <button onClick={() => signInWithGoogle()}>
+        <button className="alert-button alert-ok" onClick={() => signInWithGoogle()}>
             Sign in with Google
         </button>
     </div>

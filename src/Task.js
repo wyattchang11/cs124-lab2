@@ -9,9 +9,9 @@ const Task = (props) => {
   return (<div>
     <div className={"row top-buffer"}>
       <div className={"col-12"}>
-        <div className={props.className} id="task" aria-label={props.task.task + ", " + (props.task.priority === 0 ? "low" : (props.task.priority === 1 ? "medium" : "high")) + "priority click to complete"}>
+        <div className={props.className} id="task" aria-label={props.task.task + ", " + props.buttonClassName + "priority click to complete"}>
           <div className="row">
-            <button className="col-8 TaskFocusButton" onClick={() => {
+            <button className={"col-8 TaskFocusButton " + props.buttonClassName} onClick={() => {
               props.onItemChanged(props.currentTaskList.id, props.task.id, "completed", !props.task.completed);
             }}>
               {props.task.task}

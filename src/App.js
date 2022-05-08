@@ -17,7 +17,7 @@ import '../src/style.css';
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { initializeApp } from "firebase/app";
 import {
-  collection, doc, getFirestore, updateDoc, arrayUnion, query, setDoc, where,/* , serverTimestamp */
+  collection, doc, getFirestore, updateDoc, query, setDoc, where,/* , serverTimestamp */
   deleteDoc
 } from "firebase/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
@@ -55,6 +55,7 @@ function App(props) {
   const [user, loadingAuth, errorAuth] = useAuthState(auth);
   function verifyEmail() {
     sendEmailVerification(user);
+    window.alert('Email verification sent. Reload after verifying to see app.');
   }
 
   if (loadingAuth) {
@@ -72,21 +73,23 @@ function App(props) {
         </button>
 
       </div>
+      {!user.emailVerified ? <div>
+        <h3 className="verify">Verify Email to Use App</h3>
+        <button className='alert-button alert-ok' type="button" onClick={verifyEmail}>Verify email</button>
+        </div> :
+      <SignedInApp displayName={user.displayName} {...props} user={user} />}
 
-      <SignedInApp displayName={user.displayName} {...props} user={user} />
-      {!user.emailVerified && <button type="button" onClick={verifyEmail}>Verify email</button>}
     </div>
   } else {
     return <>
       {errorAuth && <p>Error App: {errorAuth.message}</p>}
+      <Header signedIn={false}/>
       <SignIn auth={auth} key="Sign In" />
+      <hr/>
       <SignUp auth={auth} key="Sign Up" />
     </>
   }
 }
-
-
-
 
 
 
@@ -97,9 +100,8 @@ function SignedInApp(props) {
   const [showPriorityBar, setShowPriorityBar] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showTaskListAdder, setShowTaskListAdder] = useState(false);
-  const taskListQ = query(collection(db, collectionName), where("owner", "==", props.user.uid));
+  const taskListQ = query(collection(db, collectionName), where("hasAccess", "array-contains", props.user.email));
   const [taskLists, loading, error] = useCollectionData(taskListQ);
-  // const [taskListToEdit, setTaskListToEdit] = useState("");
   const [currentTaskList, setCurrentTaskList] = useState(null);
   const [taskOrder, setTaskOrder] = useState("task");
   const [showShare, setShowShare] = useState(false);
@@ -125,10 +127,23 @@ function SignedInApp(props) {
 
   function shareTaskList(taskListId, userEmail) {
     console.log("Sharing Task List to ", taskListId, userEmail);
-    updateDoc(doc(db, collectionName, taskListId), {
+    console.log(Array.from(new Set([...currentTaskList.hasAccess, userEmail])));
+    const newTaskList = {
       ...currentTaskList,
-      hasAccess: arrayUnion(userEmail)
-    });
+      hasAccess: Array.from(new Set([...currentTaskList.hasAccess, userEmail]))
+    };
+    updateDoc(doc(db, collectionName, taskListId), newTaskList);
+    setCurrentTaskList(newTaskList);
+  }
+
+  function unshareTaskList(taskListId, userEmail){
+    console.log("unsharing Task List to ", taskListId, userEmail);
+    const newTaskList = {
+      ...currentTaskList,
+      hasAccess: currentTaskList.hasAccess.filter(e => e !== userEmail)
+    };
+    updateDoc(doc(db, collectionName, taskListId), newTaskList);
+    setCurrentTaskList(newTaskList);
   }
 
   function toggleShowShare() {
@@ -157,20 +172,19 @@ function SignedInApp(props) {
 
   function addTaskList(taskListName) {
     const uniqueId = generateUniqueID();
-    const task = {
+    const taskList = {
       id: uniqueId,
       name: taskListName,
       hasAccess: [props.user.email],
-      owner: props.user.uid
+      owner: props.user.email
     };
-    setDoc(doc(db, collectionName, uniqueId), task);
-    setCurrentTaskList(task);
+    setDoc(doc(db, collectionName, uniqueId), taskList);
+    setCurrentTaskList(taskList);
 
   }
 
   function changeTaskToEdit(taskList, taskDescription) {
     setTaskToEdit(taskDescription);
-    // setTaskListToEdit(taskList);
   }
 
   function changeCurrentTaskList(newTaskList) {
@@ -198,6 +212,7 @@ function SignedInApp(props) {
   }
 
   if (currentTaskList === null) {
+    console.log("current Task List is null");
     console.log(taskLists);
     setCurrentTaskList(taskLists.length > 0 ? taskLists[0] : {});
   }
@@ -205,13 +220,15 @@ function SignedInApp(props) {
   return (<div className="container">
     <Header userName={props.displayName}
       toggleShowShare={toggleShowShare}
-      toggleShowTaskListInfo={toggleShowTaskListInfo} />
+      toggleShowTaskListInfo={toggleShowTaskListInfo}
+      signedIn={true} />
     
     {taskLists.length > 0 ? (<ToggleBar onItemChanged={onItemChanged}
       changeTaskToEdit={changeTaskToEdit}
       togglePriorityBar={togglePriorityBar}
       toggleTaskEditor={toggleTaskEditor}
       db={db}
+      user={props.user}
       collectionName={collectionName}
       taskLists={taskLists}
       currentTaskList={currentTaskList}
@@ -240,7 +257,9 @@ function SignedInApp(props) {
     {showTaskListInfo && <TaskListInfo taskList={currentTaskList}
       toggleShowTaskListInfo={toggleShowTaskListInfo}
       deleteTaskList={deleteTaskList}
-      editTaskListName={editTaskListName} />}
+      editTaskListName={editTaskListName} 
+      unshareTaskList={unshareTaskList}
+      user={props.user}/>}
 
   </div>);
 }

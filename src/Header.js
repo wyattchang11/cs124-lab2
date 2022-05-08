@@ -19,6 +19,7 @@ const Header = (props) => {
                 <p id="day">{time.toLocaleString('default', { month: 'long' })} {time.getDate()}</p>
             </div> 
         </div>
+        {props.signedIn &&
         <div className="button-group col-4 headerButtons">
           <button className={"topRightButtons"} onClick={() => props.toggleShowShare()}>
             <FontAwesomeIcon icon={faUserGroup} size="2x"/>
@@ -26,7 +27,7 @@ const Header = (props) => {
           <button className={"topRightButtons"} onClick={() => props.toggleShowTaskListInfo()}>
             <FontAwesomeIcon icon={faEllipsisVertical} size="2x"/>
           </button>
-        </div>
+        </div>}
     </div>
 } 
 export default Header;

@@ -77,3 +77,21 @@ We then changed the focus and labels of our objects so that app was accessible w
 https://youtu.be/fSNWB8LQc9o
 
 https://www.youtube.com/watch?v=6VaKvQIbCvA
+
+#### Lab 5
+
+Whenever a user creates a new task list, that user becomes the owner and is added to the list of users that the task is shared with.
+
+For our sharing design rules we decided to use these rules:
+
+We decided that when sharing a task list with another user, that often times it is for something like group projects, so many people may need to be able to complete and add new tasks. So, we decided that all people that the task list is shared with should be able to create, update, and read the tasks in the task list.
+
+If user A shares a list with user B, then they are likely trsuted by the original user. So, we will allow them to share the list with others on the team, such as user C. We decided this after talking to some test users about whaether or not they wanted to be able to share the task lists with other people when they are shared. This is consist with other services such as google docs.
+
+On the other hand, we did not want other shared users to be able to delete entire list since the original owner may want to save that list to look at later. So, only the owner should be able to delete task lists.
+
+For this round, we did user testing with some of our classmates. from their feedback, we decided that once the list is shared that reading, creating, updating, and deleting of tasks should all be allowed. We also found that you shouldn't be able to unshare the list from people if you are not the owner. Otherwise you could unshare a task list with the owner of the task list which could lead to some issues. 
+
+Users also found that the sharing feature was intuitive as it was similar to other applications they have used in the past.
+
+Users also voiced it would be ideal for users to have the ability to mark tasks as completed if they were not the owners of the task list, along with having the ability to delete tasks that had been marked as completed.
