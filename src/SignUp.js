@@ -17,20 +17,25 @@ const SignUp = (props) => {
     return <div className="margin">
         {error && <p>Error signing up: {error.message}</p>}
         <div className="row">
-            <label htmlFor='email'>Email: </label>
-            <input type="text" id='email' value={email}
+            <label htmlFor='email' className='loginLabels'>Email: </label>
+            <input type="text" className='loginInput' id='email' value={email}
                     onChange={e=>setEmail(e.target.value)}/>
         </div>
         
         <div className="row">
-            <label htmlFor='passwordSignIn'>Password: </label>
-            <input type="password" id='passwordSignIn' value={password}
+            <label htmlFor='passwordSignIn' className='loginLabels'>Password: </label>
+            <input type="password" className='loginInput' id='passwordSignIn' value={password}
                 onChange={e=>setPassword(e.target.value)}/>
         </div>
 
         <div className="row">
-            <label htmlFor='confirmPasswordSignIn'> Confirm password: </label>
-            <input type="password" id="confirmPasswordSignIn" value={confirmPassword}
+            <label htmlFor='confirmPasswordSignIn' className='loginLabels'> Confirm password: </label>
+            <input 
+                type="password" 
+                className='loginInput'
+                id="confirmPasswordSignIn" 
+                value={confirmPassword}
+                placeholder
                 onChange={e=>setConfirmPassword(e.target.value)}/>
         </div>
         <button 
