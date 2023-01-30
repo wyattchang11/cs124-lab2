@@ -9,20 +9,18 @@ const Task = (props) => {
   return (<div>
     <div className={"row top-buffer"}>
       <div className={"col-12"}>
-        <button className={props.className} id="task" aria-label={props.task.task + ", " + (props.task.priority === 0 ? "low" : (props.task.priority === 1 ? "medium" : "high")) + "priority click to complete"}>
+        <div className={props.className} id="task" aria-label={props.task.task + ", " + props.buttonClassName + "priority click to complete"}>
           <div className="row">
-            <div className="col-8" onClick={() => {
-              console.log(props.taskCollectionId, props.task.id);
-              props.onItemChanged(props.taskCollectionId, props.task.id, "completed", !props.task.completed);
+            <button className={"col-8 TaskFocusButton " + props.buttonClassName} onClick={() => {
+              props.onItemChanged(props.currentTaskList.id, props.task.id, "completed", !props.task.completed);
             }}>
               {props.task.task}
-            </div>
+            </button>
 
             <button className='col-2 justify-content-center' 
             aria-label={"set priority"}
             onClick={() => {
-              // console.log(props.taskCollectionId, props.task.id);
-              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.changeTaskToEdit(props.currentTaskList.id, props.task);
               props.togglePriorityBar();
             }}>
 
@@ -30,7 +28,7 @@ const Task = (props) => {
             </button>
 
             <button className="col-2 justify-content-center" onClick={() => {
-              props.changeTaskToEdit(props.taskCollectionId, props.task);
+              props.changeTaskToEdit(props.currentTaskList.id, props.task);
               props.toggleTaskEditor();
             }}
             aria-label={"edit task"}>
@@ -38,7 +36,7 @@ const Task = (props) => {
             </button>
           </div>
 
-        </button>
+        </div>
       </div>
     </div>
 

@@ -12,6 +12,8 @@ body{
 }
 
 
+
+
 .container{
     display: grid;
     row-gap: 20px;
@@ -28,12 +30,16 @@ body{
     margin-top: 5px;
 }
 
-.Task.low {
+.low {
     color: lightgreen;
 }
 
-.Task.high {
-    color:rgb(253, 18, 18)
+.high {
+    color:rgb(253, 18, 18);
+}
+
+.medium{
+    color: antiquewhite;
 }
 
 .Task{
@@ -49,9 +55,9 @@ body{
     padding: 5px;
     /* display: inline-block; */
     width: 100%;
-
 }
-
+    
+    
 .CompletedTask{
     background: none;
     text-align: left;
@@ -78,7 +84,6 @@ body{
 }
 
 
-
 .AddNew{
     color: antiquewhite;
     font-family: Georgia;
@@ -89,6 +94,11 @@ body{
 .Header{
     text-align: center;
     font-size: 40px;
+}
+
+.verify{
+    color: black;
+    
 }
 
 .justify-content-center{
@@ -109,6 +119,13 @@ body{
 #day{
     font-size: 40px;
     font-weight: lighter;
+    margin: 5px;
+    text-align: left;
+}
+
+.loginLabels{
+    font-size: 20px;
+    font-weight: normal;
     margin: 5px;
     text-align: left;
 }
@@ -155,6 +172,20 @@ body{
 }
 #taskFilter{
     width: 100%;
+}
+
+.loginInput {
+    background-color: transparent;
+    color: antiquewhite; 
+    text-align: left;
+    border-color:bisque;
+    border-style: solid;
+    border-width: 3px;
+    font-family: Georgia;
+    font-size: 30px;
+    opacity: 62%;
+    padding: 5px;
+
 }
 
 #newTaskInput{
@@ -257,6 +288,11 @@ div FontAwesomeIcon{
     border-color:bisque;
 }
 
+.margin{
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
 .priority-button {
     color:#6E7582;
     background-color:antiquewhite;
@@ -341,4 +377,42 @@ h3{
 
 .dropdownMenu{
     width: 100%;
+}
+
+.headerButtons{
+    text-align: right;
+}
+
+.topRightButtons{
+    /* float: right; */
+    margin-top: .75rem;
+    margin-right: .25rem;
+    background: none;
+    border: none;
+    margin-left: 1rem;
+}
+.signOutButton{
+    background: none;
+    border: none;
+    /* float: right; */
+    text-align: left;
+}
+.TaskFocusButton{
+    background: none;
+    border: none;
+    text-align: left;
+}
+
+.sharedUsers{
+    border: none;
+    background: none;
+    text-align: left;
+}
+
+.notOwner{
+    color: inherit;
+}
+
+.owner{
+    color: #079807;
 }

@@ -1,5 +1,7 @@
 import TaskList from './TaskList.js';
-import TaskAdder from './TaskAdder.js';
+import InputField from './InputField.js';
+import TaskToggler from './TaskToggler.js';
+import TaskListToggler from './TaskListToggler';
 import Header from './Header.js';
 
 
@@ -7,7 +9,6 @@ import { useState } from 'react';
 import { collection, deleteDoc, doc, query, orderBy, setDoc/* , serverTimestamp */ } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { generateUniqueID } from 'web-vitals/dist/modules/lib/generateUniqueID';
-import Dropdown from 'react-bootstrap/Dropdown';
 import DeletedButton from './DeletedButton.js';
 
 const subCollectionName = "tasks";
@@ -15,25 +16,24 @@ const ToggleBar = (props) => {
   const [showAllTasks, setShowAllTasks] = useState(true);
   const displayAllTasks = () => setShowAllTasks(true);
   const hideCompletedTasks = () => setShowAllTasks(false);
+  const currentTaskList = props.currentTaskList;
 
-  const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
-  const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
+  // const [currentTaskListId, setCurrentTaskListId] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].id : "");
+  // const [currentTaskListName, setCurrentTaskListName] = useState((props.taskLists && props.taskLists.length > 0) ? props.taskLists[0].name : "");
   const ascOrDesc = props.taskOrder === "task" ? "asc" : "desc";
-  console.log(ascOrDesc);
-  const q = query(collection(props.db, props.collectionName, currentTaskListId, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
+  
+
+  const q = query(collection(props.db, props.collectionName, currentTaskList.id, subCollectionName), orderBy(props.taskOrder, ascOrDesc));
 
   const [tasks, loading, error] = useCollectionData(q);
 
-  console.log(props.taskOrder);
-  function changeTaskList(newTaskList) {
-    setCurrentTaskListId(newTaskList.id);
-    setCurrentTaskListName(newTaskList.name);
-  }
+
+  
 
 
   function handleAdd(taskName) {
     const uniqueId = generateUniqueID();
-    setDoc(doc(props.db, props.collectionName,  currentTaskListId, subCollectionName, uniqueId),
+    setDoc(doc(props.db, props.collectionName,  currentTaskList.id, subCollectionName, uniqueId),
       {
         id: uniqueId,
         task: taskName,
@@ -46,14 +46,10 @@ const ToggleBar = (props) => {
   function deleteCompletedTasks() {
     tasks.forEach((task) => {
       if(task.completed){
-        deleteDoc(doc(props.db, props.collectionName, currentTaskListId, subCollectionName, task.id));
+        deleteDoc(doc(props.db, props.collectionName, currentTaskList.id, subCollectionName, task.id));
       }
     })
   }
-
-  // function onItemChanged(taskCollection, taskID, field, value) {
-  //   updateDoc(doc(props.db, collectionName, currentTaskListId, subCollectionName, taskID), {[field]:value});
-  // }
 
   if (loading) {
     return (<div className="container">
@@ -69,42 +65,21 @@ const ToggleBar = (props) => {
     </div>);
   }
   return (<div>
+    <TaskToggler tasks={tasks} showAllTasks={showAllTasks} displayAllTasks={displayAllTasks} hideCompletedTasks={hideCompletedTasks}/>
     <div className="row">
-      <button className="col-6 CompletedBar" onClick={displayAllTasks}>
-        <div className={showAllTasks ? "SelectedTab" : "Tab"}>
-          All Tasks
-        </div>
-      </button>
-      <button className="col-6 CompletedBar" onClick={hideCompletedTasks}>
-        <div className={showAllTasks ? "Tab" : "SelectedTab"}>
-          Outstanding Tasks
-        </div>
-      </button>
-    </div>
-    <div className="row">
-      <div className="col-6 smallPadding">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic" className={"taskLists"}>
-            {currentTaskListName}
-          </Dropdown.Toggle>
-          <Dropdown.Menu className={"dropdownMenu"}>
-            {props.taskLists.map(taskList => <Dropdown.Item key={taskList.id} onClick={() => changeTaskList(taskList)} aria-label={taskList.name + ", click to select this task list"}>{taskList.name}</Dropdown.Item>)}
-          <Dropdown.Divider/>
-          <Dropdown.Item key="0" onClick={props.toggleTaskListAdder}>Add New Task List</Dropdown.Item> 
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+      <TaskListToggler currentTaskListName={currentTaskList.name} taskLists={props.taskLists} changeCurrentTaskList={props.changeCurrentTaskList} user={props.user} toggleTaskListAdder={props.toggleTaskListAdder}/>
+
       <button className='col-6 CompletedBar' onClick={props.toggleFilter}>
         <div className="Tab Sorter">
           Sort by: {props.taskOrder === "task" ? "Alphabet" : (props.taskOrder === "priority" ? "Priority" : "Date" )}
         </div>
       </button>
     </div>
-    <TaskAdder data={tasks} onAddTask={handleAdd} />
+    <InputField placeholder={"Enter New Task"} onSubmit={handleAdd} />
     <div className="row">
       <TaskList data={tasks}
         showAllTasks={showAllTasks}
-        taskCollectionId={currentTaskListId}
+        currentTaskList={currentTaskList}
         toggleTaskEditor={props.toggleTaskEditor}
         togglePriorityBar={props.togglePriorityBar}
         changeTaskToEdit={props.changeTaskToEdit}
